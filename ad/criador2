@@ -1,0 +1,29 @@
+#!/bin/bash
+ano=$(date +"%Y")
+loginadm=$1
+passadm=$2
+shift 2
+
+[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$loginadm%$senhaadm -W INTRANET
+
+line=$*
+
+user=$(echo $line | cut -f1 -d,)
+first=$(echo $line | cut -f2 -d,)
+last=$(echo $line | cut -f3 -d,)
+UF=$(echo $line | cut -f4 -d,)
+grupos=${line/*,/}
+
+php5 criar.php $user "${first~}" "${last~}" ${UF^^} $loginadm $passadm $ano
+
+if [ ${#grupos} -gt 0 ]
+then
+        for group in $grupos
+        do
+                net rpc group addmem $group $user -S 10.100.10.3 -U$loginadm%$passadm &> .tmp$$
+                [ $? -eq 0 ] && { echo "<p style='color:#2CA823;'>Usuario <b>$user</b> adicionado ao grupo <b>$group</b></p>";
+                                  echo $user-$group >> upload/grupos-$login-$data; } || echo "<p style='color:#C93434;'> $(cat .tmp$$) </p>";
+                rm .tmp$$
+        done
+fi
+

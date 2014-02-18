@@ -1,0 +1,29 @@
+/* CSS Document */
+
+body {
+        font-family: Tahoma, Arial;
+        font-size: 11px;
+}
+
+table {
+        border: 0px;
+        cellpadding: 2px;
+        cellspacing: 2px;
+}
+
+.esquerda {
+        background-color: #F1F1F1;
+        color: #000000;
+        padding: 5px;
+        border: 1px solid #0050A5;
+	text-align: center;
+}
+
+.direita {
+        background-color: #B9D1E7;
+        color: #000000;
+        padding: 5px;
+        border: 1px solid #0050A5;
+        text-align: center;
+        font-weight: bold;
+}

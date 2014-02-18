@@ -1,0 +1,13 @@
+<center><table><tr><td class="direita">Nome</td><td class="direita">No prazo</td><td class="direita">Fora</td><td class="direita">Total</td></tr>
+<tr><td class="direita">ADRIANO</td><td class="esquerda">168 (79%)</td><td class="esquerda">44 (21%)</td><td class="esquerda">212</td></tr>
+<tr><td class="direita">ALEXANDRE</td><td class="esquerda">69 (69%)</td><td class="esquerda">30 (31%)</td><td class="esquerda">99</td></tr>
+<tr><td class="direita">ALFREDO</td><td class="esquerda">101 (95%)</td><td class="esquerda">5 (5%)</td><td class="esquerda">106</td></tr>
+<tr><td class="direita">DANIEL</td><td class="esquerda">127 (83%)</td><td class="esquerda">25 (17%)</td><td class="esquerda">152</td></tr>
+<tr><td class="direita">GARCIA</td><td class="esquerda">122 (91%)</td><td class="esquerda">12 (9%)</td><td class="esquerda">134</td></tr>
+<tr><td class="direita">JAIRO</td><td class="esquerda">105 (92%)</td><td class="esquerda">9 (8%)</td><td class="esquerda">114</td></tr>
+<tr><td class="direita">JOEL</td><td class="esquerda">53 (92%)</td><td class="esquerda">4 (8%)</td><td class="esquerda">57</td></tr>
+<tr><td class="direita">LUCAS</td><td class="esquerda">32 (66%)</td><td class="esquerda">16 (34%)</td><td class="esquerda">48</td></tr>
+<tr><td class="direita">MARCELO</td><td class="esquerda">97 (82%)</td><td class="esquerda">21 (18%)</td><td class="esquerda">118</td></tr>
+<tr><td class="direita">RICARDO</td><td class="esquerda">139 (78%)</td><td class="esquerda">37 (22%)</td><td class="esquerda">176</td></tr>
+<tr><td class="direita">ROBO</td><td class="esquerda">1 (100%)</td><td class="esquerda">0 (0%)</td><td class="esquerda">1</td></tr>
+<tr><td class="direita">TOTAL</td><td class="esquerda">1014 (83%)</td><td class="esquerda">203 (17%)</td><td class="esquerda">1217</td></tr></table></center>

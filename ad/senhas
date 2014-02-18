@@ -1,0 +1,26 @@
+#!/bin/bash
+data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
+
+login=$1
+senha=$2
+
+[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$login%$senha -W INTRANET
+
+
+shift 2
+
+reset=$*
+ano=$(date +"%Y")
+
+for i in $reset
+do
+	echo "<p style='color:#2CA823;'>"
+	sudo net ads password $i@INTRANET Nova$ano -U$login@INTRANET%$senha 2&> .tmp$$
+	[[ $(grep Preauthentication .tmp$$) ]] && echo "<p style='color:#D36F17;'>Falha de autenticacao</p>";
+	[[ $(grep Generic .tmp$$) ]] && echo "<p style='color:#D36F17;'>Usuario $i nao encontrado</p>";
+	[[ $(grep "@INTRANET completed" .tmp$$) ]] && echo "<p style='color:#D36F17;'>Senha para $i alterada para Nova$ano.</p>";
+	rm .tmp$$
+	echo "</p>"
+	php5 reset.php $login $senha $i $ano
+	echo $i >> upload/reset-$login-$data
+done

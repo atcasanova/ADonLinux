@@ -1,0 +1,35 @@
+#!/bin/bash
+[ $# -lt 3 ] && { echo "Faltam argumentos $#" ; exit 1; }
+
+data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
+ano=$(date "+%Y")
+login=$1
+senha=$2
+
+[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$login%$senha -W INTRANET
+
+
+args=$(echo $3|tr '[A-Z]' '[a-z]')
+
+username=$(echo $args | cut -f1 -d,)
+firstname=$(echo $args | cut -f2 -d,)
+lastname=$(echo $args | cut -f3 -d,)
+UF=$(echo $args | cut -f4 -d,)
+grupos=${args/*,/}
+
+php5 criar.php $username "${firstname~}" "${lastname~}" ${UF^^} $login $senha $ano
+
+/var/www/sis/ad/senhas $login $senha $username 2> /dev/null
+
+echo "$args" > upload/criacao-$login-$data
+
+if [ ${#grupos} -gt 0 ]
+then
+	for group in $grupos
+	do
+		net rpc group addmem $group $username -S 10.100.10.3 -U$login%$senha &> .tmp$$
+		[ $? -eq 0 ] && { echo "<p style='color:#2CA823;'>Usuario <b>$username</b> adicionado ao grupo <b>$group</b></p>";
+				  echo $username-$group >> upload/grupos-$login-$data; } || echo "<p style='color:#C93434;'> $(cat .tmp$$) </p>";
+		rm .tmp$$
+	done
+fi

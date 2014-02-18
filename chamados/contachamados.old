@@ -1,0 +1,59 @@
+#!/bin/bash
+echo "<html>" > chart.html
+echo "	<head>" >> chart.html
+echo "		<link href=\"padrao.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\">"  >> chart.html
+echo "		<script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>"  >> chart.html
+echo "		<script type=\"text/javascript\">"  >> chart.html
+echo "			google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});" >> chart.html
+echo "			google.setOnLoadCallback(drawChart);"  >> chart.html
+echo "			function drawChart() {"  >> chart.html
+echo "			        var data = google.visualization.arrayToDataTable([" >> chart.html
+echo "					['Tecnico', 'No prazo', 'Fora do Prazo'],"  >> chart.html
+totalsim=0;
+totalnao=0;
+echo "<center><table><tr><td class=\"direita\">Nome</td><td class=\"direita\">No prazo</td><td class=\"direita\">Fora</td><td class=\"direita\">Total</td></tr>" > .tmp
+cat $1 | sed 's/EDUARDO COSTA GARCIA/GARCIA/g' > $1.new
+mv $1.new $1
+if [ $(file $1 | grep UTF-8 | wc -l) -ne 1 ]
+then
+	cat $1 | iconv -f ISO-8859-1 -t UTF-8 > .tmp2
+	mv .tmp2 $1
+fi
+
+for i in $(cat $1 | cut -f9 -d, | sed 's/\"//g' | cut -f1 -d" " | sed '/^$/d' | sed '1d' | sort | uniq)
+do
+	ticketssim=$(cat $1 | cut -f9,4 -d, | cut -f1 -d" " | grep "$i" | grep "SIM"| wc -l)
+	ticketsnao=$(cat $1 | cut -f9,4 -d, | cut -f1 -d" " | grep "$i" | grep "NÃO"| wc -l)
+	total=$(($ticketssim+$ticketsnao))
+	totalprazo=$((100*$ticketssim/$total))
+	totalfora=$((100-$totalprazo))
+	let totalsim+=ticketssim
+	let totalnao+=ticketsnao
+	echo "<tr><td class=\"direita\">$i</td><td class=\"esquerda\">$ticketssim (${totalprazo}%)</td><td class=\"esquerda\">$ticketsnao (${totalfora}%)</td><td class=\"esquerda\">$total</td></tr>" >> .tmp
+	echo "					['$i', $ticketssim, $ticketsnao ],"  >> chart.html
+done
+totaltickets=$(($totalsim+$totalnao))
+prazo=$((100*$totalsim/$totaltickets))
+fora=$((100-$prazo))
+echo "<tr><td class=\"direita\">TOTAL</td><td class=\"esquerda\">${totalsim} (${prazo}%)</td><td class=\"esquerda\">$totalnao (${fora}%)</td><td class=\"esquerda\">$totaltickets</td></tr></table></center>" >> .tmp
+echo "				]);" >> chart.html
+
+echo "				var options = {" >> chart.html
+echo "				 title: 'Chamados concluidos'," >> chart.html
+echo "				 hAxis: {title: 'Nomes', titleTextStyle: {color: 'red'}}" >> chart.html
+echo "				};" >> chart.html
+echo " " >> chart.html
+echo "				var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));" >> chart.html
+echo "				chart.draw(data, options);" >> chart.html
+echo "			}" >> chart.html
+echo " " >> chart.html
+echo "		</script>" >> chart.html
+echo "	</head>" >> chart.html
+echo "	<body>" >> chart.html
+echo "		<div id=\"chart_div\" style=\"width:1200px; height: 500px;\"></div>" >> chart.html
+cat .tmp >> chart.html
+echo " <center><a href=../sla/chart.html></a></center>" >> chart.html
+echo "	</body>" >> chart.html
+echo "</html>" >> chart.html
+
+echo "<script type=\"text/javascript\"> window.location.href = 'chart.html'; </script>"

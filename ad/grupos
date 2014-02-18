@@ -1,0 +1,30 @@
+#!/bin/bash
+data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
+
+while getopts "L:S:G:U:" option
+do
+	case "$option" in
+	L)	login="$OPTARG";;
+	S)	senha="$OPTARG";;
+	G)	GRPS="$OPTARG";;
+	U)	USRS="$OPTARG";;
+	esac
+done
+
+[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$login%$senha -W INTRANET
+
+
+
+for group in $GRPS
+do
+	for user in $USRS
+	do
+		net rpc group addmem $group $user -S 10.100.10.3 -U$login%$senha &> .tmp$$
+		[ $? -eq 0 ] && {
+			echo "<p style='color:#2CA823;'>Usuário <b>$user</b> adicionado ao grupo <b>$group</b></p>";
+			echo $user-$group >> upload/grupos-$login-$data;
+			} || echo "<p style='color:#C93434;'> $(cat .tmp$$) </p>";
+		rm .tmp$$
+	done
+done
+

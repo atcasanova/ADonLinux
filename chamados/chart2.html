@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<link href="padrao.css" rel="stylesheet" type="text/css" media="screen">
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript">
+			google.load("visualization", "1", {packages:["corechart"]});
+			google.setOnLoadCallback(drawChart);
+			function drawChart() {
+			        var data = google.visualization.arrayToDataTable([
+					['Tecnico', 'No prazo', 'Fora do Prazo'],
+					['ALFREDO', 74, 3 ],
+					['BEETHOVEN', 27, 25 ],
+					['DANIEL', 1, 0 ],
+					['EDUARDO', 24, 5 ],
+					['FRANCISCO', 7, 1 ],
+					['JAIRO', 60, 14 ],
+					['JOEL', 13, 0 ],
+					['LUCAS', 26, 49 ],
+					['LUCIA', 2, 0 ],
+					['RICARDO', 104, 64 ],
+				]);
+				var options = {
+				 title: 'Matadores de Chamados',
+				 hAxis: {title: 'Nomes', titleTextStyle: {color: 'red'}}
+				};
+ 
+				var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+				chart.draw(data, options);
+			}
+ 
+		</script>
+	</head>
+	<body>
+		<div id="chart_div" style="width:1200px; height: 500px;"></div>
+<center><table><tr><td class="direita">Nome</td><td class="direita">No prazo</td><td class="direita">Fora</td><td class="direita">Total</td></tr>
+<tr><td class="direita">ALFREDO</td><td class="esquerda">74</td><td class="esquerda">3</td><td class="esquerda">77</td></tr>
+<tr><td class="direita">BEETHOVEN</td><td class="esquerda">27</td><td class="esquerda">25</td><td class="esquerda">52</td></tr>
+<tr><td class="direita">DANIEL</td><td class="esquerda">1</td><td class="esquerda">0</td><td class="esquerda">1</td></tr>
+<tr><td class="direita">EDUARDO</td><td class="esquerda">24</td><td class="esquerda">5</td><td class="esquerda">29</td></tr>
+<tr><td class="direita">FRANCISCO</td><td class="esquerda">7</td><td class="esquerda">1</td><td class="esquerda">8</td></tr>
+<tr><td class="direita">JAIRO</td><td class="esquerda">60</td><td class="esquerda">14</td><td class="esquerda">74</td></tr>
+<tr><td class="direita">JOEL</td><td class="esquerda">13</td><td class="esquerda">0</td><td class="esquerda">13</td></tr>
+<tr><td class="direita">LUCAS</td><td class="esquerda">26</td><td class="esquerda">49</td><td class="esquerda">75</td></tr>
+<tr><td class="direita">LUCIA</td><td class="esquerda">2</td><td class="esquerda">0</td><td class="esquerda">2</td></tr>
+<tr><td class="direita">RICARDO</td><td class="esquerda">104</td><td class="esquerda">64</td><td class="esquerda">168</td></tr>
+<tr><td class="direita">TOTAL</td><td class="esquerda">338</td><td class="esquerda">161</td><td class="esquerda">499</td></tr></table></center>
+	</body>
+</html>

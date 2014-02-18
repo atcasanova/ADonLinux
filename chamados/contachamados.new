@@ -1,0 +1,26 @@
+#!/bin/bash
+totalsim=0;
+totalnao=0;
+echo "<center><table><tr><td class=\"direita\">Nome</td><td class=\"direita\">No prazo</td><td class=\"direita\">Fora</td><td class=\"direita\">Total</td></tr>" > .tmp
+sed -i 's/EDUARDO COSTA GARCIA/GARCIA/g' $1
+for i in $(cat $1 | iconv -f ISO-8859-1 -t UTF-8 | cut -f9 -d, | sed 's/\"//g' | cut -f1 -d" " | sed '/^$/d' | sed '1d' | sort | uniq)
+do
+	ticketssim=$(cat $1 | iconv -f ISO-8859-1 -t UTF-8 | cut -f9,4 -d, | cut -f1 -d" " | grep "$i" | grep "SIM"| wc -l)
+	ticketsnao=$(cat $1 | iconv -f ISO-8859-1 -t UTF-8 | cut -f9,4 -d, | cut -f1 -d" " | grep "$i" | grep "NÃO"| wc -l)
+	total=$(($ticketssim+$ticketsnao))
+	totalprazo=$((100*$ticketssim/$total))
+	totalfora=$((100-$totalprazo))
+	let totalsim+=ticketssim
+	let totalnao+=ticketsnao
+	echo "		<tr><td class=\"direita\">$i</td><td class=\"esquerda\">$ticketssim (${totalprazo}%)</td><td class=\"esquerda\">$ticketsnao (${totalfora}%)</td><td class=\"esquerda\">$total</td></tr>" >> .tmp
+	echo "					['$i', $ticketssim, $ticketsnao ],"  >> $$
+done
+totaltickets=$(($totalsim+$totalnao))
+prazo=$((100*$totalsim/$totaltickets))
+fora=$((100-$prazo))
+echo "		<tr><td class=\"direita\">TOTAL</td><td class=\"esquerda\">${totalsim} (${prazo}%)</td><td class=\"esquerda\">$totalnao (${fora}%)</td><td class=\"esquerda\">$totaltickets</td></tr></table></center>" >> .tmp
+sed -i chart.html "25 r .tmp" template.html
+sed -i chart.html "10 r $$" template.html
+rm $$
+echo "<script type=\"text/javascript\"> window.location.href = 'chart.html'; </script>"
+

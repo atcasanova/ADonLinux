@@ -1,0 +1,60 @@
+#!/bin/bash
+
+#verifica quantidade minima de argumentos
+[ $# -lt 5 ] && { echo "<p style='color:#C93434;'> <b>Erro:</b> Preencha todos os campos.</p>"; exit 2; }
+
+# gera a data para ser usada no nome do arquivo de log
+data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
+
+# testa join do servidor no dominio
+[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$login%$senha -W INTRANET
+
+# atribuicao de variaveis
+login=$1
+senha=$2
+grupo=$3
+docs=$4
+shift 4
+users="$*"
+
+[ $docs -eq 0 ] && path="/rede/grupos" || path="/rede/grupos/DocsScaneados"
+
+# verifica se o grupo a ser criado ja existe
+# retornando mensagem de erro e finalizando
+# o script caso exista.
+[ $(getent group $grupo) ] && { echo "<p style='color:#C93434;'> <b>Erro:</b> Grupo <b>$grupo</b> ja existe.</p>"; exit 1; }
+
+# adiciona o grupo
+net rpc group add $grupo -S 10.100.10.3 -W INTRANET -U$login%$senha &> .tmp$$
+
+# se o retorno for OK, apresenta mensagem de sucesso
+# caso contrario, exibe mensagem de erro na tela
+[ $? -eq 0 ] && {
+	echo "<p style='color:#2CA823;'>Grupo <b>$grupo</b> criado com sucesso</p>"
+} || echo "<p style='color:#C93434;'> Erro: $(cat .tmp$$) </p>";
+rm .tmp$$
+
+#adiciona usuarios ao grupo
+for user in $users
+do
+	net rpc group addmem $grupo $user -S 10.100.10.3 -W INTRANET -U$login%$senha &> .tmp$$
+	[ $? -eq 0 ] && {
+		echo "<p style='color:#2CA823;'>Usuário <b>$user</b> adicionado ao grupo <b>$group</b></p>";
+		echo $user-$group >> upload/grupos-$login-$data;
+		} || echo "<p style='color:#C93434;'> $(cat .tmp$$) </p>";
+	rm .tmp$$
+done
+
+# criacao de pasta e set de permissoes no servidor de arquivos.
+# o servidor deve ter as chaves do usuario que executa o script
+
+# permissoes especiais do DocsScaneados
+[ $docs -eq 1 ] && ssh root@10.100.10.40 "setfacl -R -m g:docsscaneados:rwx,u:impressorastype:rwx $path/${grupo^^};"
+
+# permissoes comuns a todos
+ssh root@10.100.10.40 "mkdir $path/${grupo^^}; setfacl -R -m g:$grupo:rwx,o:---,g:admingrupos:rwx $path/${grupo^^}; chmod -R 2770 $path/${grupo^^};"
+
+[ $? -eq 0 ] && {
+        echo "<p style='color:#2CA823;'>Compartilhamento <b>$path/${grupo^^}</b> criado com sucesso.<br>Todos os usuarios necessitam realizar novo login</p>"
+} || echo "<p style='color:#C93434;'> Falha de comunicação </p>";
+

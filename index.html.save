@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="pt-BR">
+<head>
+	<meta charset="utf-8">
+	<title>SiS Dnit</title>
+	<meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable = no, width = device-width">
+	
+	<!--[if lt IE 9]><script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<link rel="stylesheet" href="style.css" media="screen">
+	<!--[if lte IE 7]><link rel="stylesheet" href="style.ie7.css" media="screen" /><![endif]-->
+	<link rel="stylesheet" href="style.responsive.css" media="all">
+	<link rel="stylesheet" href="./jquery-ui-1.10.3/themes/custom-theme/jquery-ui.css" />
+	
+	<script src="script.js"></script>
+	<script src="script.responsive.js"></script>
+	<script src="./jquery-ui-1.10.3/jquery-1.9.1.js"></script>
+	<script src="./jquery-ui-1.10.3/ui/jquery-ui-1.10.3.custom.js"></script>
+	
+	<script type="text/javascript">
+	  function copUsuario() {
+		
+			var usuario = document.getElementById("usu").value;
+			
+			document.getElementById("usucriausus").value=usuario;
+			document.getElementById("usuresusus").value=usuario;
+			document.getElementById("usuconsusu").value=usuario;
+			document.getElementById("usudesusus").value=usuario;
+			document.getElementById("usucriausu").value=usuario;
+			document.getElementById("usugrusus").value=usuario;
+			document.getElementById("usuatiusus").value=usuario;
+		}	  
+		
+		function copSenha() {
+
+			var senha = document.getElementById("pass").value;
+			
+			document.getElementById("passcriausus").value=senha;
+			document.getElementById("passresusus").value=senha;
+			document.getElementById("passconsusu").value=senha;
+			document.getElementById("passdesusus").value=senha;
+			document.getElementById("passcriausu").value=senha;
+			document.getElementById("passgrusus").value=senha;
+			document.getElementById("passatiusus").value=senha; 
+		}
+    </script>
+    
+    <script >
+    	$(function(){
+        $("form.form_ajax").on('submit',function(event){
+			event.preventDefault();
+			console.log('submit');
+			var
+				$this = $(this),
+				$dialog = null,
+				titulo = $this.data('title')
+				;
+        		
+        		console.log(titulo);
+        		
+				$dialog = $('#dialog');
+				$dialog.dialog({
+					autoOpen: false,
+					title: titulo,
+					modal: false,
+					width: '800',
+					height: '600',
+					close: function( event, ui ) {
+						//$dialogCadastrar.empty();
+					},
+					open: function( event, ui ) {
+						console.log('open');
+					},
+					buttons: {
+						'Fechar': function(){
+							$(this).dialog('close');
+						}//,
+						//'Enviar': function(){
+						//	console.log('enviar');
+						//}
+					}
+
+				});
+        		
+        		$('#carregando').show();
+				
+				$.ajax({
+					url: $this.attr('action'),
+					dataType: 'html',
+					type: 'POST',
+					data: $this.serialize(),
+						//processData:false,
+						success: function(data) {
+						$dialog.html(data).dialog('open');
+						$('#carregando').hide();
+					},
+					error: function () {
+	
+					}
+				});
+			});	
+		});
+    </script>
+	
+	<style>
+		.content .postcontent-0 .layout-item-0 { color: #595959;  }
+		.content .postcontent-0 .layout-item-1 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#BFBFBF;border-right-color:#BFBFBF;border-bottom-color:#BFBFBF;border-left-color:#BFBFBF; color: #3B3B3B; background: #D4D4D4; padding-right: 10px;padding-left: 10px;  }
+		.content .postcontent-0 .layout-item-2 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#BFBFBF;border-right-color:#BFBFBF;border-bottom-color:#BFBFBF;border-left-color:#BFBFBF; color: #595959; padding-right: 10px;padding-left: 10px;  }
+		.content .postcontent-0 .layout-item-3 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#BFBFBF;border-right-color:#BFBFBF;border-bottom-color:#BFBFBF;border-left-color:#BFBFBF;border-top:none !important; color: #595959; padding-right: 10px;padding-left: 10px;  }
+		.content .postcontent-0 .layout-item-4 { border-top-style:solid;border-right-style:solid;border-bottom-style:solid;border-left-style:solid;border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-color:#BFBFBF;border-right-color:#BFBFBF;border-bottom-color:#BFBFBF;border-left-color:#BFBFBF;border-top:none !important; color: #3B3B3B; background: #D4D4D4; padding-right: 10px;padding-left: 10px;  }
+		.ie7 .post .layout-cell {border:none !important; padding:0 !important; }
+		.ie6 .post .layout-cell {border:none !important; padding:0 !important; }
+	</style>
+
+</head>
+
+<body>
+	<div id="main">
+		<div id="header-bg">
+		</div>
+		<div class="sheet clearfix">
+			<header class="header">
+				<div id="carregando" title="Carregando" style="display:none;margin:30px 0px 0px 190px;">
+						<img src="images/carregando.gif" alt="Carregando..." hspace="10px"/>
+				</div>
+				<div id="dialog" style="display:none">
+					
+				</div>
+			<div class="shapes">
+			<form id="auth" enctype="multipart/form-data">
+				<table>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td><br /></td>
+					</tr>
+					<tr>
+						<td width="691px">&nbsp;</td>
+						<td><h3 style="color:white">Usuário:</h3></td>
+						<td><input type="text" name="usuario" id="usu" size="28" onblur="this.value=this.value.toLowerCase();copUsuario(this);"></td>				
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td><h3 style="color:white">Senha:</h3></td>
+						<td><input type="password" name="password" id="pass" size="28" onchange="copSenha(this);"></td>
+					</tr>
+				</table>
+		    </form>
+			</div>
+			<h1 class="headline" data-left="4.21%">
+			<a href="#">DNIT</a>
+			</h1>
+			<h2 class="slogan" data-left="7.5%">SAT(Sistema de Auxilios aos Técnicos)</h2>         
+			</header>
+			<div class="layout-wrapper">
+				<div class="content-layout">
+					<div class="content-layout-row">
+						<div class="layout-cell content">
+								<article class="post article">
+								<div class="postcontent postcontent-0 clearfix">
+									<div class="content-layout layout-item-0">
+										<div class="content-layout-row">
+											<div class="layout-cell layout-item-1" style="width: 33%" >
+												<h1>Desativar Usuário(s)</h1>
+												<form class="form_ajax" action="ad/desativa.php" method="post" enctype="multipart/form-data" data-title="Desativar">
+													<table>
+														<tbody>
+															<tr>
+																<td style="text-align: right; "><b>Login(s):</b></td>
+																<td><input type="text" name="lista" id="lisdeslog" size="28" onblur="javascript:this.value=this.value.toLowerCase();"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><input type="hidden" name="usuario" id="usudesusus" size="28"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><div style="display: none;"><input type="password" name="password" id="passdesusus" size="28"></div></td>
+															</tr>
+														</tbody>
+													</table>
+													<input class="button" type="submit" value="Desativar"><a class="button" onclick="javascript:document.getElementById('lisdeslog').value='';"/>Limpar</a>         
+												</form>
+												<ul>
+													<li><a href="#" >Adicione múltiplos logins utilizando espaço para separá-los.</a><br></li>
+												</ul>
+											</div>
+											<div class="layout-cell layout-item-2" style="width: 34%" >
+												<h1>Resetar Senha(s)</h1>
+												<form class="form_ajax" action="ad/senhas.php" method="post" enctype="multipart/form-data" data-title="Resetar">
+													<table>
+														<tbody>
+															<tr>
+																<td style="text-align: right; "><b>Login(s):</b></td>
+																<td><input type="text" name="lista" id="lisreslog" size="28" onblur="javascript:this.value=this.value.toLowerCase();"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><input type="hidden" name="usuario" id="usuresusus" size="28"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><div style="display: none;"><input type="password" name="password" id="passresusus" size="28"></div></td>
+															</tr>
+														</tbody>
+													</table>
+													<input class="button" type="submit" value="Resetar" id="resusus"><a class="button" onclick="javascript:document.getElementById('lisreslog').value='';"/>Limpar</a>        
+												</form>
+												<ul>
+													<li><a href="#" >Adicione múltiplos logins utilizando espaço para separá-los.</a><br></li>
+												</ul>											
+											</div>
+											<div class="layout-cell layout-item-1" style="width: 33%" >
+												<h1>Consultar Usuário</h1>
+												<form class="form_ajax" action="ad/busca.php" method="post" enctype="multipart/form-data" data-title="Pesquisar">
+													<table>
+														<tbody>
+															<tr>
+																<td><b>Procurar por:</b></td>
+																<td><input type="text" name="lista" id="lisconlis" size="25" onblur="javascript:this.value=this.value.toLowerCase();"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><input type="hidden" name="usuario" id="usuconsusu" size="25"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><div style="display: none;"><input type="password" name="password" id="passconsusu" size="25"></div></td>
+															</tr>
+														</tbody>
+													</table>
+													<input class="button" type="submit" value="Pesquisar"><a class="button" onclick="javascript:document.getElementById('lisconlis').value='';"/>Limpar</a>
+												</form>
+												<ul>
+													<li><a href="#">Pesquise apenas um usuário de cada vez.</a><br></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="content-layout layout-item-0">
+										<div class="content-layout-row">
+											<div class="layout-cell layout-item-3" style="width: 33%" >
+												<h1>Ativar Usuário(s)</h1>
+												<form class="form_ajax" action="ad/ativar.php" method="post" enctype="multipart/form-data" data-title="Ativar">
+													<table>
+														<tbody>
+															<tr>
+																<td style="text-align: right; "><b>Login(s):</b></td>
+																<td><input type="text" name="lista" id="lisatilis" size="28" onblur="javascript:this.value=this.value.toLowerCase();"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "><b>UF:</b></td>
+																<td><select name="uf" id="uf"><option value="AL">AL</option><option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option><option value="DF" selected>DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MG">MG</option><option value="MT">MT</option><option value="MS">MS</option><option value="PA">PA</option><option value="PB">PB</option><option value="PE">PE</option><option value="PI">PI</option><option value="PR">PR</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RO">RO</option><option value="RS">RS</option><option value="SE">SE</option><option value="SC">SC</option><option value="SP">SP</option></select></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><input type="hidden" name="usuario" id="usuatiusus" size="28"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><div style="display: none;"><input type="password" name="password" id="passatiusus" size="28"></div></td>
+															</tr>
+														</tbody>
+													</table>
+													<input class="button" type="submit" value="Ativar"><a class="button" onclick="javascript:document.getElementById('lisatilis').value='';"/>Limpar</a>
+												</form>
+												<ul>
+													<li><a href="#" >Adicione múltiplos logins utilizando espaço para separá-los.</a><br></li>
+												</ul>
+											</div>
+											<div class="layout-cell layout-item-4" style="width: 34%" >
+												<h1>Grupos</h1>
+												<form class="form_ajax" action="ad/grupos.php" method="post" enctype="multipart/form-data" data-title="Incluir">
+												<table>
+													<tbody>
+														<tr>
+															<td style="text-align: right; "><b>Login(s):</b></td>
+															<td><input type="text" name="logins" id="loggrulog" size="25" onblur="javascript:this.value=this.value.toLowerCase();"></td>
+														</tr>
+																<tr>
+															<td style="text-align: right; "><b>Grupo(s):</b></td>
+															<td><input type="text" name="grupos" id="grugrugru" size="25" onblur="javascript:this.value=this.value.toLowerCase();"></td>
+														</tr>
+														<tr>
+															<td style="text-align: right; "></td>
+															<td><input type="hidden" name="usuario" id="usugrusus" size="25"></td>
+														</tr>
+														<tr>
+															<td style="text-align: right; "></td>
+															<td><div style="display: none;"><input type="password" name="senha" id="passgrusus" size="25"></div></td>
+														</tr>
+													</tbody>
+												</table>
+												<input class="button" type="submit" value="Incluir"><a class="button" onclick="javascript:document.getElementById('loggrulog').value='';document.getElementById('grugrugru').value='';"/>Limpar</a>
+												</form>	
+												<ul>
+													<li><a href="#" >Adicione múltiplos logins/grupos utilizando espaço para separá-los.</a></li>
+												</ul>
+											</div>
+											<div class="layout-cell layout-item-3" style="width: 33%" >
+												
+											</div>
+										</div>
+									</div>
+									<div class="content-layout layout-item-0">
+										<div class="content-layout-row">
+											<div class="layout-cell layout-item-4" style="width: 33%" >
+												<h1>Criar Usuário(s)</h1>
+												<form action="ad/parser.php" method="post" enctype="multipart/form-data" data-title="Criar" target="_blank">
+													<input type="file" name="file" id="file" accept=".csv">
+													<table>
+														<tbody>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><input type="hidden" name="usuario" id="usucriausus" size="28" ></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><div style="display: none;"><input type="password" name="password" id="passcriausus" size="28"></div></td>
+															</tr>
+														</tbody>
+													</table>
+													<input class="button" type="submit" value="Criar">
+												</form>
+												<ul>
+													<li><a href="padrao.csv">CSV modelo</a><br></li>
+													<li><a href="padrao.csv">Ao abrir no LibreOffice lembre de escolher o separador por vírgulas.</a><br></li>
+												</ul>
+											</div>
+											<div class="layout-cell layout-item-3" style="width: 34%" >
+												<h1>Symantec End Point</h1>
+												<form action="sep/upload.php" method="post" enctype="multipart/form-data" target="_blank">
+													<input type="file" name="file" id="file">
+													<br>
+													<br>
+													<input class="button" type="submit" value="Gerar Gráfico">
+												</form> 
+												<ul>
+													<li>
+														<a href="sep/chart.html" target="_blank">Última Geração</a>
+													</li>
+												</ul>
+											</div>
+											<div class="layout-cell layout-item-4" style="width: 33%" >
+												<h1>Chamado(s)</h1>
+												<form action="chamados/conta.php" method="post" enctype="multipart/form-data" target="_blank">
+													<input type="file" name="file" id="file">
+												<br>
+												<br>
+													<input class="button" type="submit" value="Gerar Gráfico">
+												</form> 
+												<ul>
+													<li>
+														<a href="chamados/chart.html" target="_blank">Última Geração</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>									
+									<div class="content-layout layout-item-0">
+										<div class="content-layout-row">
+											<div class="layout-cell layout-item-3" style="width: 33%" >
+											<h1>IPs Livres</h1>
+											<form class="form_ajax" action="../pesquisa/pesquisa.php" method="post" data-title="Pesquisar">
+												<table>
+													<tbody>
+														<tr>
+															<td><b>SubRede:</b></td>
+															<td><select name="subnet" value><option value="selecione" selected>Selecione</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="24">24</option><option value="25">25</option><option value="80">80</option><option value="81">81</option><option value="100">100</option><option value="105">105</option><option value="110">110</option><option value="111">111</option><option value="112">112</option><option value="115">115</option><option value="120">120</option><option value="121">121</option><option value="130">130</option><option value="131">131</option><option value="132">132</option><option value="135">135</option><option value="140">140</option><option value="141">141</option><option value="142">142</option><option value="145">145</option></select></td>
+															<td><input class="button" type="submit" value="Pesquisar"></td>
+														</tr>
+													</tbody>
+												</table>
+											</form>
+											<ul>
+												<li>
+													<a href="#" >Os IPs que serão listados são os disponíveis na sub rede.</a>
+												</li>
+											</ul>
+											</div>
+											<div class="layout-cell layout-item-4" style="width: 34%" >
+												<h1>Máquinas Spekx</h1>
+												<form class="form_ajax" action="csv/target.php" method="post" enctype="multipart/form-data">						
+													<input class="button" type="submit" value="Consultar">
+												</form>
+												<br><ul><li><a href="csv/output.csv" target="_blank">Última Geração</a><br></li></ul>
+											</div>
+											<div class="layout-cell layout-item-3" style="width: 33%" >
+												<h1>Logs</h1>
+												<form class="form_ajax" action="ad/pesquisalogs.php" method="post" enctype="multipart/form-data" data-title="Pesquisar">
+													<table>
+														<tbody>
+															<tr>
+																<td style="text-align: right; "><b>Procurar usuário:</b></td>
+																<td><input type="text" name="fname" id="fnalogfna" size="22" onblur="javascript:this.value=this.value.toLowerCase();"></td>
+															</tr>
+														</tbody>
+													</table>
+													<input class="button" type="submit" value="Pesquisar"><a class="button" onclick="javascript:document.getElementById('fnalogfna').value='';"/>Limpar</a>
+												</form>
+												<ul>
+													<li>
+														<a href="#">Pesquise apenas um usuário de cada vez.</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="content-layout layout-item-0">
+										<div class="layout-cell layout-item-4" style="width: 33%" >
+											<h1>Telefones Úteis</h1>
+											<ul>
+												<li><span style="font-weight: bold;">CGMI</span>
+													<ul>
+														<li><span style="font-weight: bold;">Vinicius</span> - (061)3315-4454</li>
+														<li><span style="font-weight: bold;">Patrícia</span> - (061)3315-4398</li>
+													</ul>
+												</li>
+												<li><span style="font-weight: bold;">SERPRO</span>
+													<ul>
+														<li><span style="font-weight: bold;">Lúcia</span> - (061)3315-4112</li>
+														<li><span style="font-weight: bold;">Maura</span> - (061)3315-4137</li>
+														<li><span style="font-weight: bold;">Daniel</span> - (061)3315-4502</li>
+														<li><span style="font-weight: bold;">Jairo</span> - (061)3315-4641</li>
+														<li><span style="font-weight: bold;">Joel</span> - (061)3315-4948</li>
+													</ul>
+												</li>
+											</ul>
+										</div>
+										<div class="layout-cell layout-item-3" style="width: 34%" >
+											<h1>Criar Usuário</h1>
+												<form class="form_ajax" action="ad/criaunico.php" method="post" enctype="multipart/form-data" data-title="Criar">
+													<table>
+														<tbody>
+															<tr>
+																<td style="text-align: right; "><b>Login:</b></td>
+																<td><input type="text" name="login" id="logcrilog" size="28" onblur="javascript:this.value=this.value.toLowerCase();"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "><b>Nome:</b></td>
+																<td><input type="text" name="nome" id="nomcri" size="28" onblur="javascript:this.value=this.value.toLowerCase();"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "><b>Sobrenome:</b></td>
+																<td><input type="text" name="sobrenome" id="sobcri" size="28" onblur="javascript:this.value=this.value.toLowerCase();"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "><b>UF:</b></td>
+																<td><select name="uf" id="uf"><option value="AL">AL</option><option value="AM">AM</option><option value="CE">CE</option><option value="DF" selected>DF</option><option value="ES">ES</option><option value="GO">GO</option><option value="MA">MA</option><option value="MG">MG</option><option value="MT">MT</option><option value="MS">MS</option><option value="PA">PA</option><option value="PB">PB</option><option value="PE">PE</option><option value="PI">PI</option><option value="PR">PR</option><option value="RJ">RJ</option><option value="RN">RN</option><option value="RO">RO</option><option value="RS">RS</option><option value="SE">SE</option><option value="SC">SC</option><option value="SP">SP</option></select></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "><b>Grupos:</b></td>
+																<td><input type="text" name="grupos" id="grucri" size="28" onblur="javascript:this.value=this.value.toLowerCase();"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><input type="hidden" name="usuario" id="usucriausu" size="28"></td>
+															</tr>
+															<tr>
+																<td style="text-align: right; "></td>
+																<td><div style="display: none;"><input type="password" name="password" id="passcriausu" size="28"></div></td>
+															</tr>
+														</tbody>
+													</table>
+													<input class="button" type="submit" value="Criar"><a class="button" onclick="javascript:document.getElementById('logcrilog').value='';document.getElementById('nomcri').value='';document.getElementById('sobcri').value='';document.getElementById('grucri').value='';"/>Limpar</a>         
+												</form>
+												<!-- 
+												<button id="grupos">Grupos</button>
+												<div id="grupos" style="display:none">
+													Teste
+												</div> 
+												-->
+												<ul>
+													<li>
+														<a href="#" >Caso queira adicionar múltiplos grupos utilize espaço para separá-los.</a>														
+													</li>
+												</ul>
+										</div>
+										<div class="layout-cell layout-item-4" style="width: 33%" >
+												<h1>Servidores Locais</h1>
+												<ul><li><span style="font-weight: bold;">Zabbix:</span> <a href="http://10.100.10.110" target="_blank">10.100.10.110</a></li>
+												<li><span style="font-weight: bold;">OCS:</span> <a href="http://10.100.10.16/ocsreports" target="_blank">10.100.10.16/ocsreports</a></li>
+												<li><span style="font-weight: bold;">DHCP:</span> <a href="http://10.100.10.7:11000" target="_blank">10.100.10.7:11000</a></li>
+												<li><span style="font-weight: bold;">FTP:</span> <a href="ftp://10.100.10.99" target="_blank">10.100.10.99</a></li>
+												<li><span style="font-weight: bold;">Servidor de Arquivos:</span> <a href="#" target="_blank">10.100.10.27</a></li>
+												<li><span style="font-weight: bold;">Spekx:</span> <a href="http://10.30.2.151/spekxmz/login" target="_blank">http://10.30.2.151/spekxmz/login</a></li>
+												<li><span style="font-weight: bold;">Acesso Remoto:</span> <a href="http://acessoremoto" target="_blank">http://acessoremoto</a></li></ul>
+										</div>
+									</div>
+								</div>
+							</article>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer class="footer">
+			<div class="footer-inner">
+				<div class="content-layout">
+					<div class="content-layout-row">
+						<div class="layout-cell layout-item-0" style="width: 20%">
+							<h3>Desenvolvedores</h3>Alfredo Casanova<br>Eduardo Garcia<br>Joel Bento
+						</div>
+						<div class="layout-cell layout-item-1" style="width: 20%">
+							<h3>Versão 1.1</h3><br><ul><li><br></li></ul>
+						</div>
+						<div class="layout-cell layout-item-1" style="width: 25%">
+							<h3>SERPRO</h3>Serviço Federal de Processamento de Dados<br>
+						</div>
+						<div class="layout-cell layout-item-2" style="width: 35%">
+							<p style="text-align: right;"><br></p>
+						</div>
+					</div>
+				</div>
+				<div class="content-layout">
+					<div class="content-layout-row">
+						<div class="layout-cell" style="width: 100%">
+							<p style="text-align: center;"><span style="text-align: right;">Presente na vida de todo cidadão.</span><br></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
+</body>
+</html>

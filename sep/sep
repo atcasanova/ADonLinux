@@ -1,0 +1,50 @@
+#!/bin/bash
+echo "<html>" > chart.html
+echo "	<head>" >> chart.html
+echo "		<link href=\"padrao.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\">"  >> chart.html
+echo "		<script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>"  >> chart.html
+echo "		<script type=\"text/javascript\">"  >> chart.html
+echo "			google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});" >> chart.html
+echo "			google.setOnLoadCallback(drawChart);"  >> chart.html
+echo "			function drawChart() {"  >> chart.html
+echo "			        var data = google.visualization.arrayToDataTable([" >> chart.html 
+echo "					['Situacao', 'Qtd']," >> chart.html 
+total=$(($(wc -l $1 | cut -f1 -d" ")-1))
+echo "<center><table><tr><td class=\"direita\">Total: $total</td></tr></table>" > .tmp2
+echo "<center><table><tr><td class=\"direita\">Estacao</td><td class=\"direita\">Dias defasados</td><td class=\"direita\">IP</td><td class=\"direita\">Usuario</td></tr>" >> .tmp2
+hoje=$(./dton.sh)
+>.tmp
+for line in $(cat $1 | sed '1d' | cut -d, -f2,45,59,84 | sed 's/\"//g' | sed 's/-0/\//g' | sed 's/-/\//g' | sed 's/ //g')
+do
+	data=$(./dton.sh $(echo $line | cut -f1 -d,))
+	saldo=$((hoje-data))
+	if [ $saldo -ge 10 ]
+	then
+		ip=$(echo $line | cut -f3 -d,)
+		user=$(echo $line | cut -f4 -d,)
+		estacao=$(echo $line | cut -f2 -d,)
+		echo "<tr><td class=\"direita\">$estacao</td><td class=\"esquerda\">$saldo</td><td class=\"esquerda\">$ip</td><td class=\"esquerda\">$user</td></tr>" >> .tmp
+	fi
+done
+desatualizadas=$(($(wc -l .tmp | cut -f1 -d" ")-1))
+atualizadas=$((total-desatualizadas))
+echo "					['Atualizadas ($atualizadas)', $atualizadas]," >> chart.html 
+echo "					['Desatualizadas ($desatualizadas)', $desatualizadas]," >> chart.html 
+echo "				]);" >> chart.html
+echo "			        var options = {" >> chart.html
+echo "			          title: 'Atualizacoes de Anti Virus'" >> chart.html
+echo "        };" >> chart.html
+
+echo "			        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));" >> chart.html
+echo "				chart.draw(data, options);" >> chart.html
+echo "      }" >> chart.html
+echo "		</script>" >> chart.html
+echo "	</head>" >> chart.html
+echo "	<body>" >> chart.html
+echo "		<div id=\"chart_div\" style=\"width:1200px; height: 500px;\"></div>" >> chart.html
+cat .tmp2 >> chart.html
+cat .tmp | sort -n -k5 -t'>' -r >> chart.html
+echo "	</body>" >> chart.html
+echo "</html>" >> chart.html
+
+echo "<script type=\"text/javascript\"> window.location.href = 'chart.html'; </script>"

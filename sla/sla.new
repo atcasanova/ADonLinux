@@ -1,0 +1,75 @@
+#!/bin/bash
+echo "<html>" > /var/www/sis/sla/chart.html
+echo "  <head>" >> /var/www/sis/sla/chart.html
+echo "          <link href=\"padrao.css\" rel=\"stylesheet\" type=\"text/css\" media=\"all\">"  >> /var/www/sis/sla/chart.html
+echo "          <script type=\"text/javascript\" src=\"https://www.google.com/jsapi\"></script>"  >> /var/www/sis/sla/chart.html
+echo "          <script type=\"text/javascript\">"  >> /var/www/sis/sla/chart.html
+echo "                  google.load(\"visualization\", \"1\", {packages:[\"corechart\"]});" >> /var/www/sis/sla/chart.html
+echo "                  google.setOnLoadCallback(drawChart);"  >> /var/www/sis/sla/chart.html
+echo "                  function drawChart() {"  >> /var/www/sis/sla/chart.html
+echo "                          var data = google.visualization.arrayToDataTable([" >> /var/www/sis/sla/chart.html
+echo "                          ['Limite', 'Ate 2h', 'Ate 4h', 'Ate 8h', 'Ate 12h', 'Ate 24h', '24h ou mais']," >> /var/www/sis/sla/chart.html
+
+echo "<center><table><tr><td class=\"direita\">Prazo</td><td class=\"direita\">Ate 2h</td><td class=\"direita\">Ate 4h</td><td class=\"direita\">Ate 8h</td><td class=\"direita\">Ate 12h</td><td class=\"direita\">Ate 24h</td><td class=\"direita\">Mais de 24h</td></tr>" > /var/www/sis/sla/.tmp
+
+
+declare -A indices
+
+for i in $(cat $1 | sed '1d' | cut -f12 -d, | sort -n | uniq)
+do
+#	grep [0-9],$i $1 | cut -f11 -d, | sort -nr > .tmp$i
+	t120=0
+	t240=0
+	t480=0
+	t720=0
+	t1440=0
+	tmaior=0
+#	for t in $(cat .tmp$i)
+	for t in $(grep [0-9],$i$ $1 | cut -f11 -d, | sort -n)
+	do
+		[ $t -le 120 ] && let t120++ && continue;
+		[ $t -le 240 -a $t -gt 120 ] && let t240++ && continue;
+		[ $t -le 480 -a $t -gt 240 ] && let t480++ && continue;
+		[ $t -le 720 -a $t -gt 480 ] && let t720++ && continue;
+		[ $t -le 1440 -a $t -gt 720 ] && let t1440++ && continue;
+		[ $t -gt 1440 ] && let tmaior++ && continue;
+	done;
+	for k in $(cat $1 | sed '1d' | cut -f12 -d, | sort -n | uniq)
+	do
+		indices[$k]=$(grep [0-9],$k$ $1 | cut -f11 -d, | wc -l)
+	done
+
+	for j in $(cat $1 | sed '1d' | cut -f12 -d, | sort -n | uniq)
+	do
+		var=t$j
+		echo $j: ${indices[$j]}
+		eval t$j=$((100*${!var}/${indices[$j]}))
+		eval echo t$j
+		echo ${!var}
+	done
+
+
+
+	echo "			['$i',$t120,$t240,$t480,$t720,$t1440,$tmaior]," >> /var/www/sis/sla/chart.html
+	echo "<tr><td class=\"direita\">$i</td><td class=\"esquerda\">$t120</td><td class=\"esquerda\">$t240</td><td class=\"esquerda\">$t480</td><td class=\"esquerda\">$t720</td><td class=\"esquerda\">$t1440</td><td class=\"esquerda\">$tmaior</td></tr>" >> /var/www/sis/sla/.tmp
+done
+echo "                          ]);" >> /var/www/sis/sla/chart.html
+echo "                          var options = {" >> /var/www/sis/sla/chart.html
+echo "                           title: 'SLA'," >> /var/www/sis/sla/chart.html
+echo "                           hAxis: {title: 'Prazo dos chamados', titleTextStyle: {color: 'red'}}" >> /var/www/sis/sla/chart.html
+echo "                          };" >> /var/www/sis/sla/chart.html
+echo " " >> /var/www/sis/sla/chart.html
+echo "                          var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));" >> /var/www/sis/sla/chart.html
+echo "                          chart.draw(data, options);" >> /var/www/sis/sla/chart.html
+echo "                  }" >> /var/www/sis/sla/chart.html
+echo " " >> /var/www/sis/sla/chart.html
+echo "          </script>" >> /var/www/sis/sla/chart.html
+echo "  </head>" >> /var/www/sis/sla/chart.html
+echo "  <body>" >> /var/www/sis/sla/chart.html
+echo "          <div id=\"chart_div\" style=\"width:1200px; height: 500px;\"></div>" >> /var/www/sis/sla/chart.html
+cat /var/www/sis/sla/.tmp >> /var/www/sis/sla/chart.html
+echo "  </body>" >> /var/www/sis/sla/chart.html
+echo "</html>" >> /var/www/sis/sla/chart.html
+
+echo "<script type=\"text/javascript\"> window.location.href = 'chart.html'; </script>"
+

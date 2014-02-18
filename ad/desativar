@@ -1,0 +1,18 @@
+#!/bin/bash
+data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
+login=$1
+senha=$2
+
+
+[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$login%$senha -W INTRANET
+
+
+shift 2
+
+desativar=$*
+
+for i in $desativar
+do
+	php5 desativar.php $login $senha $i
+	echo $i >> upload/desativacao-$login-$data
+done

@@ -1,0 +1,30 @@
+#!/bin/bash
+dos2unix $3
+ano=$(date +"%Y")
+sed -i '1d' $3
+loginadm=$1
+passadm=$2
+
+[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$loginadm%$senhaadm -W INTRANET 2&> /dev/null
+
+while read line
+do
+        user=$(echo $line | cut -f1 -d,)
+        first=$(echo $line | cut -f2 -d,)
+        last=$(echo $line | cut -f3 -d,)
+        UF=$(echo $line | cut -f4 -d,)
+	group=${line/*,/}
+        php5 criar.php $user "${first~}" "${last~}" ${UF^^} $loginadm $passadm $ano
+	[ ${#group} -gt 0 ] && {
+	        echo "<ul>"
+	        for group in ${line/*,/}
+        	do
+                	echo "<li><p style='color:#D36F17;margin:0px;'>Usuário <b>${line/,*/}</b> adicionado ao grupo <b>$group</b>.</p></li>"
+	                net rpc group addmem $group ${line/,*/} -S 10.100.10.3 -U$loginadm%$passadm
+        	done
+	        echo "</ul>"
+	}
+done < $3
+
+data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
+mv $3 upload/criacao-$loginadm-$data

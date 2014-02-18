@@ -1,0 +1,19 @@
+#!/bin/bash
+data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
+login=$1
+senha=$2
+uf=$3
+
+[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$login%$senha -W INTRANET
+
+
+shift 3
+
+ativar=$*
+
+for i in $ativar
+do
+	php5 ativar.php $login $senha $uf $i
+	/var/www/sis/ad/senhas $login $senha $i 2> /dev/null
+	echo $i >> upload/ativacao-$login-$data
+done
