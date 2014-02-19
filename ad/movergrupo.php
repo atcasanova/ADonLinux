@@ -47,7 +47,7 @@ if ($Tipo == "docs"){
            $mo = ldap_rename($ds, $dn, 'cn=' . $nam, $newOU, true);
            
            if ($mo){
-           	print "<p style='color:#2CA823;'>Grupo <b>$nam</b> movido para ".$newOU." com sucesso.</p>";
+           	print "<p style='color:#2CA823;'>OK.</p>";
             
 	       }else{
 	       	print "<p style='color:#C93434;'>Erro, grupo <b>$nam NÃO</b> movido com sucesso.</p>";

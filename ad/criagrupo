@@ -48,11 +48,15 @@ done
 # criacao de pasta e set de permissoes no servidor de arquivos.
 # o servidor deve ter as chaves do usuario que executa o script
 
+
+# criar pasta e setar permissoes
+ssh root@10.100.10.40 "mkdir $path/${grupo^^};"
+
 # permissoes especiais do DocsScaneados
 [ $docs -eq 1 ] && ssh root@10.100.10.40 "setfacl -R -m g:docsscaneados:rwx,u:impressorastype:rwx $path/${grupo^^};"
 
 # permissoes comuns a todos
-ssh root@10.100.10.40 "mkdir $path/${grupo^^}; setfacl -R -m g:$grupo:rwx,o:---,g:admingrupos:rwx $path/${grupo^^}; chmod -R 2770 $path/${grupo^^};"
+ssh root@10.100.10.40 "setfacl -R -m g:$grupo:rwx,o:---,g:admingrupos:rwx $path/${grupo^^}; chmod -R 2770 $path/${grupo^^};"
 
 [ $? -eq 0 ] && {
         echo "<p style='color:#2CA823;'>Compartilhamento <b>$path/${grupo^^}</b> criado com sucesso.<br>Todos os usuarios necessitam realizar novo login</p>"

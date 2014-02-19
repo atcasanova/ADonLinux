@@ -1,8 +1,8 @@
 <center><table><tr><td class="direita">Prazo</td><td class="direita">Ate 2h</td><td class="direita">Ate 4h</td><td class="direita">Ate 8h</td><td class="direita">Ate 12h</td><td class="direita">Ate 24h</td><td class="direita">Mais de 24h</td></tr>
-<tr><td class="direita">120</td><td class="esquerda">1</td><td class="esquerda">5</td><td class="esquerda">2</td><td class="esquerda">1</td><td class="esquerda">2</td><td class="esquerda">5</td></tr>
-<tr><td class="direita">720</td><td class="esquerda">251</td><td class="esquerda">231</td><td class="esquerda">247</td><td class="esquerda">135</td><td class="esquerda">146</td><td class="esquerda">188</td></tr>
-<tr><td class="direita">1200</td><td class="esquerda">0</td><td class="esquerda">1</td><td class="esquerda">1</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td></tr>
-<tr><td class="direita">2200</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">3</td><td class="esquerda">3</td></tr>
-<tr><td class="direita">4200</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">1</td><td class="esquerda">0</td><td class="esquerda">0</td></tr>
-<tr><td class="direita">4320</td><td class="esquerda">3</td><td class="esquerda">0</td><td class="esquerda">2</td><td class="esquerda">3</td><td class="esquerda">0</td><td class="esquerda">3</td></tr>
-<tr><td class="direita">9600</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">1</td></tr>
+<tr><td class="direita">120</td><td class="esquerda">4</td><td class="esquerda">6</td><td class="esquerda">5</td><td class="esquerda">2</td><td class="esquerda">3</td><td class="esquerda">4</td></tr>
+<tr><td class="direita">360</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">1</td><td class="esquerda">0</td></tr>
+<tr><td class="direita">720</td><td class="esquerda">130</td><td class="esquerda">189</td><td class="esquerda">182</td><td class="esquerda">91</td><td class="esquerda">116</td><td class="esquerda">134</td></tr>
+<tr><td class="direita">1200</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">2</td><td class="esquerda">0</td><td class="esquerda">2</td><td class="esquerda">1</td></tr>
+<tr><td class="direita">4200</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">2</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td></tr>
+<tr><td class="direita">4320</td><td class="esquerda">1</td><td class="esquerda">0</td><td class="esquerda">1</td><td class="esquerda">0</td><td class="esquerda">1</td><td class="esquerda">1</td></tr>
+<tr><td class="direita">9600</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">0</td><td class="esquerda">1</td><td class="esquerda">0</td></tr>
