@@ -2,14 +2,9 @@
 . base
 [ $# -lt 3 ] && { echo "Faltam argumentos $#" ; exit 1; }
 
-data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
 ano=$(date "+%Y")
 login=$1
 senha=$2
-
-[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$login%$senha -W INTRANET
-
-
 args=$(echo $3|tr '[A-Z]' '[a-z]')
 
 username=$(echo $args | cut -f1 -d,)

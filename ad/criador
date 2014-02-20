@@ -1,4 +1,6 @@
 #!/bin/bash
+.base
+
 dos2unix $3
 ano=$(date +"%Y")
 sed -i '1d' $3
@@ -26,5 +28,4 @@ do
 	}
 done < $3
 
-data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
 mv $3 upload/criacao-$loginadm-$data

@@ -1,6 +1,5 @@
 #!/bin/bash
 . base
-data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
 
 while getopts "L:S:G:U:" option
 do
