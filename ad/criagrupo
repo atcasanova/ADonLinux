@@ -1,7 +1,8 @@
 #!/bin/bash
+. base
 
 #verifica quantidade minima de argumentos
-[ $# -lt 5 ] && { echo "<p style='color:#C93434;'> <b>Erro:</b> Preencha todos os campos.</p>"; exit 2; }
+[ $# -lt 5 ] && { printError "<b>Erro:</b> Preencha todos os campos."; exit 2; }
 
 # gera a data para ser usada no nome do arquivo de log
 data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
@@ -22,7 +23,7 @@ users="$*"
 # verifica se o grupo a ser criado ja existe
 # retornando mensagem de erro e finalizando
 # o script caso exista.
-[ $(getent group $grupo) ] && { echo "<p style='color:#C93434;'> <b>Erro:</b> Grupo <b>$grupo</b> ja existe.</p>"; exit 1; }
+[ $(getent group $grupo) ] && { printError "<b>Erro:</b> Grupo <b>$grupo</b> ja existe."; exit 1; }
 
 # adiciona o grupo
 net rpc group add $grupo -S 10.100.10.3 -W INTRANET -U$login%$senha &> .tmp$$
@@ -30,8 +31,8 @@ net rpc group add $grupo -S 10.100.10.3 -W INTRANET -U$login%$senha &> .tmp$$
 # se o retorno for OK, apresenta mensagem de sucesso
 # caso contrario, exibe mensagem de erro na tela
 [ $? -eq 0 ] && {
-	echo "<p style='color:#2CA823;'>Grupo <b>$grupo</b> criado com sucesso</p>"
-} || echo "<p style='color:#C93434;'> Erro: $(cat .tmp$$) </p>";
+	printOK "Grupo <b>$grupo</b> criado com sucesso"
+} || printError "Erro: $(cat .tmp$$)";
 rm .tmp$$
 
 #adiciona usuarios ao grupo
@@ -39,9 +40,9 @@ for user in $users
 do
 	net rpc group addmem $grupo $user -S 10.100.10.3 -W INTRANET -U$login%$senha &> .tmp$$
 	[ $? -eq 0 ] && {
-		echo "<p style='color:#2CA823;'>Usuário <b>$user</b> adicionado ao grupo <b>$group</b></p>";
+		printOK "Usuário <b>$user</b> adicionado ao grupo <b>$group</b>"
 		echo $user-$group >> upload/grupos-$login-$data;
-		} || echo "<p style='color:#C93434;'> $(cat .tmp$$) </p>";
+		} || printError "$(cat .tmp$$)";
 	rm .tmp$$
 done
 
@@ -59,6 +60,6 @@ ssh root@10.100.10.40 "mkdir $path/${grupo^^};"
 ssh root@10.100.10.40 "setfacl -R -m g:$grupo:rwx,o:---,g:admingrupos:rwx $path/${grupo^^}; chmod -R 2770 $path/${grupo^^};"
 
 [ $? -eq 0 ] && {
-        echo "<p style='color:#2CA823;'>Compartilhamento <b>$path/${grupo^^}</b> criado com sucesso.<br>Todos os usuarios necessitam realizar novo login</p>"
-} || echo "<p style='color:#C93434;'> Falha de comunicação </p>";
+        printOK "Compartilhamento <b>$path/${grupo^^}</b> criado com sucesso.<br>Todos os usuarios necessitam realizar novo login"
+} || printError "Falha de comunicação";
 

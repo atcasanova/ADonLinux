@@ -15,7 +15,7 @@ ano=$(date +"%Y")
 for i in $reset
 do
 	echo "<p style='color:#2CA823;'>"
-	sudo net ads password $i@INTRANET Nova$ano -U$login@INTRANET%$senha 2&> .tmp$$
+	sudo net ads password $i@INTRANET Nova$ano -U$login@INTRANET%$senha &> .tmp$$
 	[[ $(grep Preauthentication .tmp$$) ]] && echo "<p style='color:#D36F17;'>Falha de autenticacao</p>";
 	[[ $(grep Generic .tmp$$) ]] && echo "<p style='color:#D36F17;'>Usuario $i nao encontrado</p>";
 	[[ $(grep "@INTRANET completed" .tmp$$) ]] && echo "<p style='color:#D36F17;'>Senha para $i alterada para Nova$ano.</p>";

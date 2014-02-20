@@ -1,0 +1,12 @@
+#!/bin/bash
+printOK (){
+	echo "<p style='color:#2CA823;'>$*</p>";
+}
+
+printError (){
+	echo "<p style='color:#C93434;'>$*</p>"
+}
+
+printWarning (){
+	echo "<p style='color:#D36F17;'>$*</p>";
+}

@@ -1,4 +1,5 @@
 #!/bin/bash
+. base
 data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
 
 while getopts "L:S:G:U:" option
@@ -21,9 +22,9 @@ do
 	do
 		net rpc group addmem $group $user -S 10.100.10.3 -U$login%$senha &> .tmp$$
 		[ $? -eq 0 ] && {
-			echo "<p style='color:#2CA823;'>Usuário <b>$user</b> adicionado ao grupo <b>$group</b></p>";
+			printOK "Usuário <b>$user</b> adicionado ao grupo <b>$group</b>";
 			echo $user-$group >> upload/grupos-$login-$data;
-			} || echo "<p style='color:#C93434;'> $(cat .tmp$$) </p>";
+			} || printError "$(cat .tmp$$)";
 		rm .tmp$$
 	done
 done
