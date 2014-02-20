@@ -24,7 +24,11 @@ do
 		[ $? -eq 0 ] && {
 			printOK "Usuário <b>$user</b> adicionado ao grupo <b>$group</b>";
 			echo $user-$group >> upload/grupos-$login-$data;
-			} || printError "$(cat .tmp$$)";
+			} || {
+				[[ $(cat .tmp$$ | grep MEMBER_IN_GROUP) ]] && printWarning "Usuário <b>$user</b> já está no grupo <b>$group</b>";
+				[[ $(cat .tmp$$ | grep "Could not lookup group name") ]] && printError "Grupo <b>$group</b> inexistente";
+				[[ $(cat .tmp$$ | grep NT_STATUS_NONE_MAPPED) ]] && printError "Usuário <b>$user</b> inexistente";
+			}
 		rm .tmp$$
 	done
 done
