@@ -1,4 +1,5 @@
 #!/bin/bash
+. base
 data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
 
 login=$1
@@ -16,9 +17,9 @@ for i in $reset
 do
 	echo "<p style='color:#2CA823;'>"
 	sudo net ads password $i@INTRANET Nova$ano -U$login@INTRANET%$senha &> .tmp$$
-	[[ $(grep Preauthentication .tmp$$) ]] && echo "<p style='color:#D36F17;'>Falha de autenticacao</p>";
-	[[ $(grep Generic .tmp$$) ]] && echo "<p style='color:#D36F17;'>Usuario $i nao encontrado</p>";
-	[[ $(grep "@INTRANET completed" .tmp$$) ]] && echo "<p style='color:#D36F17;'>Senha para $i alterada para Nova$ano.</p>";
+	[[ $(grep Preauthentication .tmp$$) ]] && printError "Falha de autenticacao";
+	[[ $(grep Generic .tmp$$) ]] && printError "Usuario $i nao encontrado";
+	[[ $(grep "@INTRANET completed" .tmp$$) ]] && printOK "Senha para $i alterada para Nova$ano.";
 	rm .tmp$$
 	echo "</p>"
 	php5 reset.php $login $senha $i $ano
