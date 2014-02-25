@@ -4,8 +4,10 @@
 dos2unix $3
 ano=$(date +"%Y")
 sed -i '1d' $3
-loginadm=$1
-passadm=$2
+login=$1
+senha=$2
+
+checkLogin
 
 [ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
 
@@ -16,16 +18,16 @@ do
         last=$(echo $line | cut -f3 -d,)
         UF=$(echo $line | cut -f4 -d,)
 	group=${line/*,/}
-        php5 criar.php $user "${first~}" "${last~}" ${UF^^} $loginadm $passadm $ano
+        php5 criar.php $user "${first~}" "${last~}" ${UF^^} $login $senha $ano
 	[ ${#group} -gt 0 ] && {
 	        echo "<ul>"
 	        for group in ${line/*,/}
         	do
                 	echo "<li><p style='color:#D36F17;margin:0px;'>Usuário <b>${line/,*/}</b> adicionado ao grupo <b>$group</b>.</p></li>"
-	                net rpc group addmem $group ${line/,*/} -S 10.100.10.3 -U$loginadm%$passadm
+	                net rpc group addmem $group ${line/,*/} -S 10.100.10.3 -U$login%$senha
         	done
 	        echo "</ul>"
 	}
 done < $3
 
-mv $3 upload/criacao-$loginadm-$data
+mv $3 upload/criacao-$login-$data

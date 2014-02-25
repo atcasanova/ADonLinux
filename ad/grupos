@@ -11,8 +11,7 @@ do
 	esac
 done
 
-[ ${login:-`echo 1`} -eq 1 ] && { printError "Falha de autenticação"; exit 3; }
-[ ${senha:-`echo 1`} -eq 1 ] && { printError "Falha de autenticação"; exit 3; }
+checkLogin
 
 [ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
 

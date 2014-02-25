@@ -2,14 +2,21 @@
 [[ $(sudo net ads testjoin) ]] || needjoin=1
 data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
 
-printOK (){
+printOK(){
 	echo "<p style='color:#2CA823;'>$*</p>";
 }
 
-printError (){
+printError(){
 	echo "<p style='color:#C93434;'>$*</p>"
 }
 
-printWarning (){
+printWarning(){
 	echo "<p style='color:#D36F17;'>$*</p>";
 }
+
+checkLogin(){
+	if [ ${login:-`echo 1`} -eq 1 ] || [ ${senha:-`echo 1`} -eq 1 ]; then
+		printError "Falha de autenticação"; exit 3;
+	fi
+}
+

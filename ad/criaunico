@@ -7,6 +7,8 @@ login=$1
 senha=$2
 args=$(echo $3|tr '[A-Z]' '[a-z]')
 
+checkLogin
+
 [ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
 
 username=$(echo $args | cut -f1 -d,)

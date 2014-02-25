@@ -4,12 +4,6 @@
 #verifica quantidade minima de argumentos
 [ $# -lt 5 ] && { printError "<b>Erro:</b> Preencha todos os campos."; exit 2; }
 
-# gera a data para ser usada no nome do arquivo de log
-data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
-
-# testa join do servidor no dominio
-[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$login%$senha -W INTRANET
-
 # atribuicao de variaveis
 login=$1
 senha=$2
@@ -17,6 +11,9 @@ grupo=$3
 docs=$4
 shift 4
 users="$*"
+
+checkLogin
+[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
 
 [ $docs -eq 0 ] && path="/rede/grupos" || path="/rede/grupos/DocsScaneados"
 
