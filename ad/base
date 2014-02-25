@@ -15,8 +15,6 @@ printWarning(){
 }
 
 checkLogin(){
-	if [ ${login:-1} -eq 1 ] || [ ${senha:-1} -eq 1 ]; then
-		printError "Falha de autenticação"; exit 3;
-	fi
+	[[ ! $login || ! $senha ]] && { printError "Falha de autenticação"; exit 3; }
 }
 

@@ -33,7 +33,7 @@ if ($ds) {
     $r = ldap_add($ds, $dn, $ldaprecord);
 
 	if($r){
-		echo "<p style='color:#2CA823;'>Usuáro <b>$login</b> criado com sucesso. <br />";
+		echo "<p style='color:#2CA823;'>Usuário <b>$login</b> criado com sucesso. <br />";
 	}else{
   		echo "<p style='color:#D36F17;'>Usuário ou senha do autenticador está(ão) incorreta(s).</p>";
 	}
