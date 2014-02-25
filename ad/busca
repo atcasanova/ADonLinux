@@ -1,10 +1,11 @@
 #!/bin/bash
+. base
 login=$1
 senha=$2
 shift 2
 lista=$@
 
-[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
+[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
 
 echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
 

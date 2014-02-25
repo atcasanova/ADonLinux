@@ -11,9 +11,10 @@ do
 	esac
 done
 
-[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$login%$senha -W INTRANET
+[ ${login:-`echo 1`} -eq 1 ] && { printError "Falha de autenticação"; exit 3; }
+[ ${senha:-`echo 1`} -eq 1 ] && { printError "Falha de autenticação"; exit 3; }
 
-
+[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
 
 for group in $GRPS
 do
@@ -21,7 +22,7 @@ do
 	do
 		net rpc group addmem $group $user -S 10.100.10.3 -U$login%$senha &> .tmp$$
 		[ $? -eq 0 ] && {
-			printOK "Usuário <b>$user</b> adicionado ao grupo <b>$group</b>";
+			printOK "Usuário <b>$user</b> adicionado ao grupo <b>$group</b>.<br>É necessário realizar um novo login na estação.";
 			echo $user-$group >> upload/grupos-$login-$data;
 			} || {
 				[[ $(cat .tmp$$ | grep MEMBER_IN_GROUP) ]] && printWarning "Usuário <b>$user</b> já está no grupo <b>$group</b>";

@@ -40,7 +40,7 @@ for user in $users
 do
 	net rpc group addmem $grupo $user -S 10.100.10.3 -W INTRANET -U$login%$senha &> .tmp$$
 	[ $? -eq 0 ] && {
-		printOK "Usuário <b>$user</b> adicionado ao grupo <b>$group</b>"
+		printOK "Usuário <b>$user</b> adicionado ao grupo <b>$group</b>. É necessário realizar um novo login na estação."
 		echo $user-$group >> upload/grupos-$login-$data;
 		} || printError "$(cat .tmp$$)";
 	rm .tmp$$

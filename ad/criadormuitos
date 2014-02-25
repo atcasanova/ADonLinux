@@ -1,10 +1,12 @@
 #!/bin/bash
+. base
+
 dos2unix $3
 sed -i '1d' $3
 loginadm=$1
 passadm=$2
 
-[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$loginadm%$senhaadm -W INTRANET
+[ $needjoin -eq 1 ] && sudo net ads join -U$loginadm%$passadm -W INTRANET &> /dev/null
 
 cat $3 | xargs -P5 -L1 ./criador2 $loginadm $passadm
 

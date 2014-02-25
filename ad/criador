@@ -1,5 +1,5 @@
 #!/bin/bash
-.base
+. base
 
 dos2unix $3
 ano=$(date +"%Y")
@@ -7,7 +7,7 @@ sed -i '1d' $3
 loginadm=$1
 passadm=$2
 
-[[ $(sudo net ads testjoin) ]] || sudo net ads join -U$loginadm%$senhaadm -W INTRANET 2&> /dev/null
+[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
 
 while read line
 do
