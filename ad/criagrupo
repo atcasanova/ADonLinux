@@ -15,12 +15,12 @@ users="$*"
 checkLogin
 [ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
 
-[ $docs -eq 0 ] && path="/rede/grupos" || path="/rede/grupos/DocsScaneados"
-
 # verifica se o grupo a ser criado ja existe
 # retornando mensagem de erro e finalizando
 # o script caso exista.
-[ $(getent group $grupo) ] && { printError "<b>Erro:</b> Grupo <b>$grupo</b> ja existe."; exit 1; }
+[ $(getent group $grupo) ] && { printError "<b>Erro:</b> Grupo <b>$grupo</b> ja existe."; exit 9; }
+
+[ $docs -eq 0 ] && path="/rede/grupos" || path="/rede/grupos/DocsScaneados"
 
 # adiciona o grupo
 net rpc group add $grupo -S 10.100.10.3 -W INTRANET -U$login%$senha &> .tmp$$
@@ -35,11 +35,15 @@ rm .tmp$$
 #adiciona usuarios ao grupo
 for user in $users
 do
-	net rpc group addmem $grupo $user -S 10.100.10.3 -W INTRANET -U$login%$senha &> .tmp$$
+	net rpc group addmem $group $user -S 10.100.10.3 -U$login%$senha &> .tmp$$
 	[ $? -eq 0 ] && {
-		printOK "Usuário <b>$user</b> adicionado ao grupo <b>$group</b>. É necessário realizar um novo login na estação."
+		printOK "Usuário <b>$user</b> adicionado ao grupo <b>$group</b>.<br>É necessário realizar um novo login na estação.";
 		echo $user-$group >> upload/grupos-$login-$data;
-		} || printError "$(cat .tmp$$)";
+	} || {
+		[[ $(cat .tmp$$ | grep MEMBER_IN_GROUP) ]] && printWarning "Usuário <b>$user</b> já está no grupo <b>$group</b>";
+		[[ $(cat .tmp$$ | grep "Could not lookup group name") ]] && printError "Grupo <b>$group</b> inexistente";
+		[[ $(cat .tmp$$ | grep NT_STATUS_NONE_MAPPED) ]] && printError "Usuário <b>$user</b> inexistente";
+	}
 	rm .tmp$$
 done
 
