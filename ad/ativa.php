@@ -4,5 +4,12 @@
   $senha = str_replace($forbidden, "", $_POST["password"]);
   $uf = str_replace($forbidden, "", $_POST["uf"]);
   $logins = str_replace($forbidden, "", $_POST["lista"]);
-  system("bash /var/www/sis/ad/ativar $usuario $senha $uf $logins");
+
+if (isset($_POST['naoreseta'])) {
+        $reset=0;
+} else {
+        $reset=1;
+}
+
+  system("bash /var/www/sis/ad/ativar $usuario $senha $uf $reset $logins");
 ?>

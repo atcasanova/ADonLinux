@@ -11,11 +11,16 @@ checkLogin
 
 [ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
 
-username=$(echo $args | cut -f1 -d,)
-firstname=$(echo $args | cut -f2 -d,)
-lastname=$(echo $args | cut -f3 -d,)
-UF=$(echo $args | cut -f4 -d,)
-grupos=${args/*,/}
+oIFS="$IFS"
+IFS=,
+read username firstname lastname UF grupos <<< "$args"
+#username=$(echo $args | cut -f1 -d,)
+#firstname=$(echo $args | cut -f2 -d,)
+#lastname=$(echo $args | cut -f3 -d,)
+#UF=$(echo $args | cut -f4 -d,)
+#grupos=${args/*,/}
+
+IFS="$oIFS"
 
 php5 criar.php $username "${firstname~}" "${lastname~}" ${UF^^} $login $senha $ano
 

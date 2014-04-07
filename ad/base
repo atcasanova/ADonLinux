@@ -1,5 +1,5 @@
 #!/bin/bash
-[[ $(sudo net ads testjoin) ]] || needjoin=1
+[[ $(sudo net ads testjoin) ]] || needjoin=1 && needjoin=0
 data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
 
 printOK(){

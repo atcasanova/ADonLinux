@@ -3,8 +3,6 @@
 
 login=$1
 senha=$2
-shift 2
-lista=$@
 
 checkLogin
 
@@ -12,4 +10,4 @@ checkLogin
 
 echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
 
-php5 buscar.php $login $senha $lista
+php5 buscarQuantia.php $login $senha

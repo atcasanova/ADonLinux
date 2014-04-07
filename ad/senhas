@@ -13,11 +13,12 @@ ano=$(date +"%Y")
 
 for i in $reset
 do
+	nome=$(getent passwd $i | cut -f5 -d:)
 	echo "<p style='color:#2CA823;'>"
 	sudo net ads password $i@INTRANET Nova$ano -U$login@INTRANET%$senha &> .tmp$$
 	[[ $(grep Preauthentication .tmp$$) ]] && printError "Falha de autenticacao";
 	[[ $(grep Generic .tmp$$) ]] && printError "Usuario $i nao encontrado";
-	[[ $(grep "@INTRANET completed" .tmp$$) ]] && printOK "Senha para $i alterada para Nova$ano.";
+	[[ $(grep "@INTRANET completed" .tmp$$) ]] && printOK "Senha para <b>$nome</b> (<b>$i</b>) alterada para Nova$ano.";
 	rm .tmp$$
 	echo "</p>"
 	php5 reset.php $login $senha $i $ano
