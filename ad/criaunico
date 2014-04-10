@@ -1,6 +1,6 @@
 #!/bin/bash
 . base
-[ $# -lt 3 ] && { echo "Faltam argumentos $#" ; exit 1; }
+[ $# -lt 3 ] && { printError "Numero de argumentos insuficiente." ; exit 1; }
 
 ano=$(date "+%Y")
 login=$1
@@ -14,27 +14,12 @@ checkLogin
 oIFS="$IFS"
 IFS=,
 read username firstname lastname UF grupos <<< "$args"
-#username=$(echo $args | cut -f1 -d,)
-#firstname=$(echo $args | cut -f2 -d,)
-#lastname=$(echo $args | cut -f3 -d,)
-#UF=$(echo $args | cut -f4 -d,)
-#grupos=${args/*,/}
-
 IFS="$oIFS"
 
 php5 criar.php $username "${firstname~}" "${lastname~}" ${UF^^} $login $senha $ano
 
-/var/www/sis/ad/senhas $login $senha $username 2> /dev/null
+./senhas $login $senha $username 2> /dev/null
 
 echo "$args" > upload/criacao-$login-$data
 
-if [ ${#grupos} -gt 0 ]
-then
-	for group in $grupos
-	do
-		net rpc group addmem $group $username -S 10.100.10.3 -U$login%$senha &> .tmp$$
-		[ $? -eq 0 ] && { printOK "Usuario <b>$username</b> adicionado ao grupo <b>$group</b>";
-				  echo $username-$group >> upload/grupos-$login-$data; } || printError "$(cat .tmp$$)";
-		rm .tmp$$
-	done
-fi
+./grupos -L $login -S $senha -G "$grupos" -U "$username"

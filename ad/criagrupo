@@ -23,7 +23,7 @@ checkLogin
 [ $docs -eq 0 ] && path="/rede/grupos" || path="/rede/grupos/DocsScaneados"
 
 # adiciona o grupo
-net rpc group add $grupo -S 10.100.10.3 -W INTRANET -U$login%$senha &> .tmp$$
+net rpc group add $grupo -S $servidor -W INTRANET -U$login%$senha &> .tmp$$
 
 # se o retorno for OK, apresenta mensagem de sucesso
 # caso contrario, exibe mensagem de erro na tela
@@ -32,20 +32,9 @@ net rpc group add $grupo -S 10.100.10.3 -W INTRANET -U$login%$senha &> .tmp$$
 } || printError "Erro: $(cat .tmp$$)";
 rm .tmp$$
 
-#adiciona usuarios ao grupo
-for user in $users
-do
-	net rpc group addmem $grupo $user -S 10.100.10.3 -U$login%$senha &> .tmp$$
-	[ $? -eq 0 ] && {
-		printOK "Usuário <b>$user</b> adicionado ao grupo <b>$grupo</b>";
-		echo $user-$grupo >> upload/grupos-$login-$data;
-	} || {
-		[[ $(grep MEMBER_IN_GROUP .tmp$$) ]] && printWarning "Usuário <b>$user</b> já está no grupo <b>$grupo</b>";
-		[[ $(grep "Could not lookup group name" .tmp$$) ]] && printError "Grupo <b>$grupo</b> inexistente";
-		[[ $(grep NT_STATUS_NONE_MAPPED .tmp$$) ]] && printError "Usuário <b>$user</b> inexistente";
-	}
-	rm .tmp$$
-done
+# adicionar usuarios ao grupo
+./grupos -L $login -S $senha -G "$grupo" -U "$users"
+
 
 # criacao de pasta e set de permissoes no servidor de arquivos.
 # o servidor deve ter as chaves do usuario que executa o script

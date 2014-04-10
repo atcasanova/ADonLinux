@@ -13,20 +13,20 @@ checkLogin
 
 while read line
 do
-        user=$(echo $line | cut -f1 -d,)
-        first=$(echo $line | cut -f2 -d,)
-        last=$(echo $line | cut -f3 -d,)
-        UF=$(echo $line | cut -f4 -d,)
-	group=${line/*,/}
-        php5 criar.php $user "${first~}" "${last~}" ${UF^^} $login $senha $ano
+
+	oIFS="$IFS"
+	IFS=,
+	read user first last UF group <<< "$line"
+	IFS="$oIFS"
+
+	php5 criar.php $user "${first~}" "${last~}" ${UF^^} $login $senha $ano
+
 	[ ${#group} -gt 0 ] && {
-	        echo "<ul>"
-	        for group in ${line/*,/}
+	        for group in $group
         	do
-                	echo "<li><p style='color:#D36F17;margin:0px;'>Usuário <b>${line/,*/}</b> adicionado ao grupo <b>$group</b>.</p></li>"
-	                net rpc group addmem $group ${line/,*/} -S 10.100.10.3 -U$login%$senha
+	                net rpc group addmem $group $user -S $servidor -U$login%$senha
+                	printOK "Usuário <b>$user</b> adicionado ao grupo <b>$group</b>"
         	done
-	        echo "</ul>"
 	}
 done < $3
 

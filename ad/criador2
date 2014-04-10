@@ -1,4 +1,6 @@
 #!/bin/bash
+. base
+
 ano=$(date +"%Y")
 loginadm=$1
 passadm=$2
@@ -20,7 +22,7 @@ if [ ${#grupos} -gt 0 ]
 then
         for group in $grupos
         do
-                net rpc group addmem $group $user -S 10.100.10.3 -U$loginadm%$passadm &> .tmp$$
+                net rpc group addmem $group $user -S $servidor -U$loginadm%$passadm &> .tmp$$
                 [ $? -eq 0 ] && { echo "<p style='color:#2CA823;'>Usuario <b>$user</b> adicionado ao grupo <b>$group</b></p>";
                                   echo $user-$group >> upload/grupos-$login-$data; } || echo "<p style='color:#C93434;'> $(cat .tmp$$) </p>";
                 rm .tmp$$
