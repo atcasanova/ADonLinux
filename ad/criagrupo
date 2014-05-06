@@ -47,7 +47,16 @@ ssh root@10.100.10.40 "mkdir $path/${grupo^^};"
 [ $docs -eq 1 ] && ssh root@10.100.10.40 "setfacl -R -m g:docsscaneados:rwx,u:impressorastype:rwx $path/${grupo^^};"
 
 # permissoes comuns a todos
-ssh root@10.100.10.40 "setfacl -R -m g:$grupo:rwx,o:---,g:admingrupos:rwx $path/${grupo^^}; chmod -R 2770 $path/${grupo^^};"
+ssh root@10.100.10.40 "setfacl -R -m o:---,g:admingrupos:rwx,g:$idgrupo:rwx $path/${grupo^^}; chmod -R 2770 $path/${grupo^^};"
+
+#[ $? -ne 0 ] && idgrupo=$(ssh root@10.100.10.40 "getent group | grep ^${grupo}:x | cut -f3 -d:")
+
+# loop para corrigir falha do AD
+while [ ! $(ssh root@10.100.10.40 "getfacl $path/${grupo^^} | grep $grupo:rwx") ];
+do
+	ssh root@10.100.10.40 "setfacl -R -m o:---,g:admingrupos:rwx,g:$grupo:rwx $path/${grupo^^}; chmod -R 2770 $path/${grupo^^};"
+done;
+
 
 [ $? -eq 0 ] && {
         printOK "Compartilhamento <b>$path/${grupo^^}</b> criado com sucesso.<br>Todos os usuarios necessitam realizar novo login"

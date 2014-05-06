@@ -12,6 +12,7 @@ do
 done
 
 checkLogin
+mostra=0;
 
 [ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
 

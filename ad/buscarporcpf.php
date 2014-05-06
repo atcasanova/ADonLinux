@@ -20,7 +20,7 @@ if ($argc<4){
 		}
 	}
 
-	$filter="(|(cn=$SearchFor*)(samaccountname=$SearchFor*))";
+	$filter="(streetAddress=$SearchFor)";
 
 	$ds = ldap_connect($AD_server);
 	ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);  //Set the LDAP Protocol used by your AD service
@@ -37,16 +37,16 @@ if ($argc<4){
 	    $nam=$info[$x]['cn'][0];
 	    $ou=$info[$x]['distinguishedname'][0];
             $cpf=$info[$x]['streetaddress'][0];
-	      print "<br>Informa√ß√µes do Usu√°rio (<b>".($x+1)."</b>):\n<br>";
+	      print "<br>InformaÁıes do Usu·rio (<b>".($x+1)."</b>):\n<br>";
 	      print "Nome Completo: <b>$nam</b> \n<br>";
 	      print "Login: <b>$sam</b> \n<br>";
 	      print "DN: <b>$ou</b> \n<br>";
               print "CPF: <b>$cpf</b> \n<br>";
 	}
 	if(!$ver_log){
-	  	print "<p style='color:#D36F17;'>Usu√°rio ou senha do autenticador est√° incorreta(s).</p>";
+	  	print "<p style='color:#D36F17;'>Usu·rio ou senha do autenticador est· incorreta(s).</p>";
 	}elseif ($x==0) {
-	  	print "<p style='color:#C93434;'>Erro, login <b>$SearchFor</b> n√£o foi encontrado. Por favor tente de novo.</p>\n"; 
+	  	print "<p style='color:#C93434;'>Erro, login <b>$SearchFor</b> n„o foi encontrado. Por favor tente de novo.</p>\n"; 
 	}
 }
 ?>
