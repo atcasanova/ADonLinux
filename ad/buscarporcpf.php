@@ -37,12 +37,13 @@ if ($argc<4){
 	    $giv=$info[$x]['givenname'][0];
 	    $nam=$info[$x]['cn'][0];
 	    $ou=$info[$x]['distinguishedname'][0];
-            $cpf=$info[$x]['streetaddress'][0];
-	      print "<br>Informações do Usuário (<b>".($x+1)."</b>):\n<br>";
+            $cpf=substr($info[$x]['streetaddress'][0],4);
+	      print "<br>InformaÃ§Ãµes do UsuÃ¡rio (<b>".($x+1)."</b>):\n<br>";
 	      print "Nome Completo: <b>$nam</b> \n<br>";
 	      print "Login: <b>$sam</b> \n<br>";
 	      print "DN: <b>$ou</b> \n<br>";
-              print "CPF: <b>substr($cpf,4)</b> \n<br>";
+       
+              print "CPF: <b>$cpf</b> \n<br>";
 	}
 	if(!$ver_log){
 	  	print "<p style='color:#D36F17;'>Usuário ou senha do autenticador está incorreta(s).</p>";

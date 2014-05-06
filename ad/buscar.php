@@ -36,7 +36,7 @@ if ($argc<4){
 	    $giv=$info[$x]['givenname'][0];
 	    $nam=$info[$x]['cn'][0];
 	    $ou=$info[$x]['distinguishedname'][0];
-            $cpf=$info[$x]['streetaddress'][0];
+             $cpf=substr($info[$x]['streetaddress'][0],4);
 	      print "<br>Informações do Usuário (<b>".($x+1)."</b>):\n<br>";
 	      print "Nome Completo: <b>$nam</b> \n<br>";
 	      print "Login: <b>$sam</b> \n<br>";
