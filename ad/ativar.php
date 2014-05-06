@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 include 'selad.php';
 $AD_Auth_User = $argv[1];
 $AD_Auth_PWD = $argv[2];

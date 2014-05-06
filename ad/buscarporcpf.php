@@ -12,6 +12,7 @@ $login = $argv[3];
 if ($argc<4){
 	print "<p style='color:#D36F17'>Preencha no minimo 4 caracteres.</p>";
 }else{
+  $SearchFor="CPF:";
 	for($i=3; $i < $argc; $i++){
 	    if(($i+1)==$argc){
 	    	$SearchFor=$SearchFor.$argv[$i];
@@ -41,7 +42,7 @@ if ($argc<4){
 	      print "Nome Completo: <b>$nam</b> \n<br>";
 	      print "Login: <b>$sam</b> \n<br>";
 	      print "DN: <b>$ou</b> \n<br>";
-              print "CPF: <b>$cpf</b> \n<br>";
+              print "CPF: <b>substr($cpf,4)</b> \n<br>";
 	}
 	if(!$ver_log){
 	  	print "<p style='color:#D36F17;'>Usuário ou senha do autenticador está incorreta(s).</p>";
