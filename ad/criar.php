@@ -3,14 +3,12 @@ $login = $argv[1];
 $givenName = $argv[2];
 $SN = $argv[3];
 $UF = $argv[4];
-
 $CN = $givenName.' '.$SN;
 include 'selad.php';
 $AD_Auth_User = $argv[5]; //Administrative user
-$LDAPUserDomain = "@intranet";
 $AD_Auth_PWD = $argv[6]; //The password
 $ano = $argv[7];
-$dn = 'CN='.$CN.',OU=Padrao,OU=Usuarios,OU='.$UF.',DC=intranet';
+$dn = 'CN='.$CN.',OU=Padrao,OU=Usuarios,OU='.$UF.','.$dc;
 
 $ds = ldap_connect($AD_server);
 
@@ -33,12 +31,12 @@ if ($ds) {
     $r = ldap_add($ds, $dn, $ldaprecord);
 
 	if($r){
-		echo "<p style='color:#2CA823;'>Usuário <b>$login</b> criado com sucesso. <br />";
+		echo "<p style='color:#2CA823;'>Usuario <b>$login</b> criado com sucesso. <br />";
 	}else{
-  		echo "<p style='color:#D36F17;'>Usuário ou senha do autenticador está(ão) incorreta(s).</p>";
+  		echo "<p style='color:#D36F17;'>Usuário ou senha do autenticador incorretos.</p>";
 	}
 }else{
-    echo "<p style='color:#D36F17;'><b>Erro</b>, não foi possivel conectar no servidor LDAP: $AD_server.</p>";
+    echo "<p style='color:#D36F17;'><b>Erro</b>, nao foi possivel conectar ao servidor LDAP: $AD_server.</p>";
 }
 
 //$oe = system("net ads password " . $login . "@INTRANET Nova" . $ano . " -U" . $argv[5] . "@INTRANET%" . $AD_Auth_PWD . " 2&> /dev/null");
@@ -59,7 +57,7 @@ if ($ds) {
     $r = ldap_mod_replace($ds, $dn, $ldaprecord2);
 
 } else {
-    echo "<p style='color:#D36F17;'><b>Erro</b>, não foi possivel conectar no servidor LDAP: $AD_server.</p>";
+    echo "<p style='color:#D36F17;'><b>Erro</b>, nao foi possivel conectar ao servidor LDAP: $AD_server.</p>";
 }
 
 ?>

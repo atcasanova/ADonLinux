@@ -2,21 +2,20 @@
 include 'selad.php';
 $AD_Auth_User = $argv[1];
 $AD_Auth_PWD = $argv[2];
-$dn = "DC=intranet";
 $LDAPFieldsToFind = array("cn", "givenname", "samaccountname", "distinguishedname");
-$LDAPUserDomain = "@intranet";
 $SearchFor=$argv[3];
 $SearchField="samaccountname";
 $filter="($SearchField=$SearchFor)";
 $ano=$argv[4];
-$OUDesativados="OU=Usuarios,OU=Desativados,OU=DNIT,DC=intranet";
+//Defini qual o endereço da OU de desativados
+$OUDesativados="OU=Usuarios,OU=Desativados,OU=DNIT,".$dc;
 
 $ds = ldap_connect($AD_server);
 ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);  //Set the LDAP Protocol used by your AD service
 ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);         //This was necessary for my AD to do anything
 $ver_log = ldap_bind($ds, $AD_Auth_User.$LDAPUserDomain, $AD_Auth_PWD);
 
-$sr = ldap_search($ds, $dn, $filter, $LDAPFieldsToFind);
+$sr = ldap_search($ds, $dc, $filter, $LDAPFieldsToFind);
 
 $info = ldap_get_entries($ds, $sr);
 

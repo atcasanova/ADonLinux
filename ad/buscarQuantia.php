@@ -3,10 +3,9 @@
 include 'selad.php';
 $AD_Auth_User = $argv[1];
 $AD_Auth_PWD = $argv[2];
-$DC = ",DC=intranet";
 $LDAPFieldsToFind = array("cn", "givenname", "samaccountname", "distinguishedname","streetAddress");
+//Todas as OUs presentes no dominio
 $TodasAsOUs = array("AL","AM","BA","CE","DF","ES","GO","MA","MG","MS","MT","PA","PB","PE","PI","PR","RJ","RN","RO","RS","SC","SE","SP","TO");
-$LDAPUserDomain = "@intranet";
 
 //Conectando ao AD.
 $ds = ldap_connect($AD_server);
@@ -24,7 +23,7 @@ if(!$ver_log){
 		print "<tr><td>".$TodasAsOUs[$i]."</td>";
 		
 		//Contando usuários
-		$DNUser = "OU=Usuarios,OU=".$TodasAsOUs[$i].$DC;
+		$DNUser = "OU=Usuarios,OU=".$TodasAsOUs[$i].",".$DC;
 		$filter='(objectCategory=person)';
 		$sr = ldap_search($ds, $DNUser, $filter, $LDAPFieldsToFind);
 		$info = ldap_get_entries($ds, $sr);	
@@ -32,7 +31,7 @@ if(!$ver_log){
 		$TotalUsers = $TotalUsers + $info["count"];
 		
 		//Contando Computadores
-		$DNUComputer = "OU=Estacoes,OU=".$TodasAsOUs[$i].$DC;
+		$DNUComputer = "OU=Estacoes,OU=".$TodasAsOUs[$i].",".$DC;
 		$filter='(objectCategory=computer)';
 		$sr = ldap_search($ds, $DNUComputer, $filter, $LDAPFieldsToFind);
 		$info = ldap_get_entries($ds, $sr);	

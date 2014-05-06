@@ -3,9 +3,7 @@ include 'selad.php';
 $AD_Auth_User = $argv[1];
 $AD_Auth_PWD = $argv[2];
 $Tipo = $argv[3];
-$dn = "DC=intranet";
 $LDAPFieldsToFind = array("cn", "samaccountname", "distinguishedname");
-$LDAPUserDomain = "@intranet";
 $SearchFor=$argv[4];
 $SearchField="samaccountname";
 $filter="($SearchField=$SearchFor)";
@@ -20,22 +18,21 @@ $sr = ldap_search($ds, $dn, $filter, $LDAPFieldsToFind);
 $info = ldap_get_entries($ds, $sr);
 
 if ($Tipo == "docs"){
-	$newOU = 'OU=Grupos do DocsScanner,OU=Grupos,OU=DF,DC=intranet';
+	$newOU = 'OU=Grupos do DocsScanner,OU=Grupos,OU=DF,'.$dc;
 }else{
-	$newOU = 'OU=Grupos de Acesso a arquivos,OU=Grupos,OU=DF,DC=intranet';
+	$newOU = 'OU=Grupos de Acesso a arquivos,OU=Grupos,OU=DF,'.$dc;
 }
 
  for ($x=0; $x<$info["count"]; $x++) {
     $sam=$info[$x]['samaccountname'][0];
     $nam=$info[$x]['cn'][0];
-    $ou=$info[$x]['distinguishedname'][0];
+    $dn=$info[$x]['distinguishedname'][0];
   }
   if (!$ver_log){
   	print "<p style='color:#D36F17;'>Usuário ou senha do autenticador está incorreta(s).</p>";
   }elseif ($x==0) {
 	print "<p style='color:#C93434;'>Erro, grupo <b>$SearchFor</b> não foi encontrado. Por favor tente de novo.</p>"; 
   }else{
-        $dn=$ou;
 
         //system("net ads password " . $SearchFor . "@INTRANET Nova" . $ano . " -U" .$AD_Auth_User. "%" . $AD_Auth_PWD . " 2&> /dev/null");
 
