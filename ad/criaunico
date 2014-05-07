@@ -9,7 +9,7 @@ args=$(echo $3|tr '[A-Z]' '[a-z]')
 
 checkLogin
 
-[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
+[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W $domain &> /dev/null
 
 oIFS="$IFS"
 IFS=,

@@ -13,7 +13,7 @@ shift 4
 users="$*"
 
 checkLogin
-[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
+[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W $domain &> /dev/null
 
 # verifica se o grupo a ser criado ja existe
 # retornando mensagem de erro e finalizando
@@ -23,7 +23,7 @@ checkLogin
 [ $docs -eq 0 ] && path="/rede/grupos" || path="/rede/grupos/DocsScaneados"
 
 # adiciona o grupo
-net rpc group add $grupo -S $servidor -W INTRANET -U$login%$senha &> .tmp$$
+net rpc group add $grupo -S $servidor -W $domain -U$login%$senha &> .tmp$$
 
 # se o retorno for OK, apresenta mensagem de sucesso
 # caso contrario, exibe mensagem de erro na tela

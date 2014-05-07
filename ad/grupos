@@ -14,7 +14,7 @@ done
 checkLogin
 mostra=0;
 
-[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
+[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W $domain &> /dev/null
 
 for group in $GRPS
 do

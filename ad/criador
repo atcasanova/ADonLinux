@@ -9,7 +9,7 @@ senha=$2
 
 checkLogin
 
-[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
+[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W $domain &> /dev/null
 
 while read line
 do
@@ -20,6 +20,7 @@ do
 	IFS="$oIFS"
 
 	php5 criar.php $user "${first~}" "${last~}" ${UF^^} $login $senha $ano
+	./senhas $login $senha $username 2> /dev/null
 
 	[ ${#group} -gt 0 ] && {
 	        for group in $group

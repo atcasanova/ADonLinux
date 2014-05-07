@@ -8,7 +8,7 @@ senha=$2
 
 checkLogin
 
-[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W INTRANET &> /dev/null
+[ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W $domain &> /dev/null
 
 cat $3 | xargs -P5 -L1 ./criador2 $login $senha
 
