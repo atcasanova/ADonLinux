@@ -1,5 +1,5 @@
 #!/bin/bash
-. base
+. base.sh
 
 login=$1
 senha=$2

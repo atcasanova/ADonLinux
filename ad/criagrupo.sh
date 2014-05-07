@@ -1,5 +1,5 @@
 #!/bin/bash
-. base
+. base.sh
 
 #verifica quantidade minima de argumentos
 [ $# -lt 5 ] && { printError "<b>Erro:</b> Preencha todos os campos."; exit 2; }

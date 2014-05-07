@@ -1,5 +1,5 @@
 #!/bin/bash
-. base
+. base.sh
 [ $# -lt 3 ] && { printError "Numero de argumentos insuficiente." ; exit 1; }
 
 ano=$(date "+%Y")

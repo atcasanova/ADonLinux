@@ -1,5 +1,5 @@
 #!/bin/bash
-. base
+. base.sh
 
 dos2unix $3
 ano=$(date +"%Y")

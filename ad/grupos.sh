@@ -1,5 +1,5 @@
 #!/bin/bash
-. base
+. base.sh
 
 while getopts "L:S:G:U:" option
 do
