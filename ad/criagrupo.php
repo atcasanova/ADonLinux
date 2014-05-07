@@ -14,7 +14,7 @@ if (isset($_POST['docsscaneados'])) {
 	$docs=0;
 }
 
-  system("bash /var/www/sis/ad/criagrupo $usuario $senha $grupo $docs '$logins'");
+  system("bash /var/www/sis/ad/criagrupo.sh $usuario $senha $grupo $docs '$logins'");
 
 if (isset($_POST['docsscaneados'])) {
         //mover $grupo para a OU dos grupos do docsscaneados

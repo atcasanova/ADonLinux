@@ -11,5 +11,5 @@ if (isset($_POST['naoreseta'])) {
         $reset=1;
 }
 
-  system("bash /var/www/sis/ad/ativar $usuario $senha $uf $reset $logins");
+  system("bash /var/www/sis/ad/ativar.sh $usuario $senha $uf $reset $logins");
 ?>

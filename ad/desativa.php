@@ -3,6 +3,6 @@
   $usuario = str_replace($forbidden, "", $_POST["usuario"]);
   $senha = str_replace($forbidden, "", $_POST["password"]);
   $logins = str_replace($forbidden, "", $_POST["lista"]);
-  system("bash /var/www/sis/ad/desativar $usuario $senha $logins");
+  system("bash /var/www/sis/ad/desativar.sh $usuario $senha $logins");
 ?>
 

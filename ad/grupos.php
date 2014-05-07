@@ -7,7 +7,7 @@ $grupos = str_replace($forbidden, "", $_POST["grupos"]);
 $usuario = str_replace($forbidden, "", $_POST["usuario"]);
 $senha = str_replace($forbidden, "", $_POST["senha"]);
 
-  system("bash /var/www/sis/ad/grupos -L $usuario -S $senha -G '$grupos' -U '$logins'");
+  system("bash /var/www/sis/ad/grupos.sh -L $usuario -S $senha -G '$grupos' -U '$logins'");
 
 ?>
 
