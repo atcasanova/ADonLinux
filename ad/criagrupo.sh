@@ -33,7 +33,7 @@ net rpc group add $grupo -S $servidor -W $domain -U$login%$senha &> .tmp$$
 rm .tmp$$
 
 # adicionar usuarios ao grupo
-./grupos -L $login -S $senha -G "$grupo" -U "$users"
+./grupos.sh -L $login -S $senha -G "$grupo" -U "$users"
 
 
 # criacao de pasta e set de permissoes no servidor de arquivos.

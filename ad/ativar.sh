@@ -18,6 +18,6 @@ ativar=$*
 for i in $ativar
 do
 	php5 ativar.php $login $senha $uf $i
-	[ $reset -eq 1 ] && /var/www/sis/ad/senhas $login $senha $i
+	[ $reset -eq 1 ] && /var/www/sis/ad/senhas.sh $login $senha $i
 	echo $i >> upload/ativacao-$login-$data
 done

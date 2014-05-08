@@ -10,7 +10,7 @@ checkLogin
 
 [ $needjoin -eq 1 ] && sudo net ads join -U$login%$senha -W $domain &> /dev/null
 
-cat $3 | xargs -P5 -L1 ./criador2 $login $senha
+cat $3 | xargs -P5 -L1 ./criador2.sh $login $senha
 
 data=$(date --rfc-3339=seconds | cut -f1-3 -d- | sed 's/ /-/g' | sed 's/:/-/g')
 #mv $3 upload/criacao-$loginadm-$data

@@ -20,7 +20,7 @@ do
 	IFS="$oIFS"
 
 	php5 criar.php $user "${first~}" "${last~}" ${UF^^} $login $senha $ano
-	./senhas $login $senha $username 2> /dev/null
+	./senhas.sh $login $senha $username
 
 	[ ${#group} -gt 0 ] && {
 	        for group in $group

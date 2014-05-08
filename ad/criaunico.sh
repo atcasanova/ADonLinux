@@ -18,8 +18,8 @@ IFS="$oIFS"
 
 php5 criar.php $username "${firstname~}" "${lastname~}" ${UF^^} $login $senha $ano
 
-./senhas $login $senha $username 2> /dev/null
+./senhas.sh $login $senha $username 2> /dev/null
 
 echo "$args" > upload/criacao-$login-$data
 
-./grupos -L $login -S $senha -G "$grupos" -U "$username"
+./grupos.sh -L $login -S $senha -G "$grupos" -U "$username"
